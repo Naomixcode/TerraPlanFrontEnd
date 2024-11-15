@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Proyecto } from '../models/Proyecto';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
+import { ProyectoporEstadoDTO } from '../models/ProyectoporEstadoDTO';
+import { TerrenoporProyectoDTO } from '../models/TerrenoporproyectoDTO';
 
 const base_url = environment.base;
 
@@ -47,4 +49,15 @@ export class ProyectoService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.url}/${id}`, { headers: this.createAuthorizationHeader() });
   }
+  
+  getProyectosporEstado(estadoProyecto: string): Observable<ProyectoporEstadoDTO[]> {
+    return this.http.get<ProyectoporEstadoDTO[]>(`${this.url}/listar_proyectos_estado/${estadoProyecto}`, { headers: this.createAuthorizationHeader() });
+  }
+
+  getTerrenosporProyecto(idProyecto: number): Observable<TerrenoporProyectoDTO[]> {
+    return this.http.get<TerrenoporProyectoDTO[]>(`${this.url}/terrenos_por_proyecto/${idProyecto}`, { headers: this.createAuthorizationHeader() });
+  }
+  
+
+  
 }

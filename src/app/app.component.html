@@ -71,6 +71,24 @@
                 <a href="/prototipos/crear">Crear</a>
             </div>
         </div>
+        <div class="dropdown">
+            <a (click)="toggleReportesMenu()">Reportes</a>
+            <div *ngIf="showReportesMenu" class="dropdown-menu">
+                <a href="/reportes/proyectosporestado">Proyectos por Estado</a>
+                <a href="/reportes/terrenosporproyecto">Terrenos por Proyecto</a>
+
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <a (click)="toggleComentarioMenu()">Comentario</a>
+            <div *ngIf="showComentarioMenu" class="dropdown-menu">
+                <a href="/comentarios">Listar</a>
+                <a href="/comentarios/crear">Crear</a>
+
+            </div>
+        </div>
+
     </div>
     <button class="logout-button" (click)="onLogout()">Salir</button>
 </nav>

@@ -35,6 +35,9 @@ export class AppComponent {
   showMaterialMenu: boolean =false;
   showEvaluacionesoMenu: boolean = false;
   showPrototiposMenu: boolean = false;
+  showReportesMenu: boolean = false;
+  showComentarioMenu: boolean = false;
+  
 
    // Nueva propiedad para el menú de Planos
 
@@ -129,4 +132,21 @@ export class AppComponent {
       this.showPlanoMenu = false;
     }
   }
+  toggleReportesMenu() {
+    this.showReportesMenu  = !this.showReportesMenu ;
+    if (this.showReportesMenu ) {
+      this.showUserMenu = false;
+      this.showRoleMenu = false;
+      this.showPlanoMenu = false;
+    }
+  }
+  toggleComentarioMenu(){
+    this.showComentarioMenu  = !this.showComentarioMenu ;
+    if (this.showReportesMenu ) {
+      this.showUserMenu = false;
+      this.showRoleMenu = false;
+      this.showPlanoMenu = false;
+    }
+  }
+
 }
