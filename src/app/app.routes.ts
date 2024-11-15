@@ -28,6 +28,12 @@ import { CreaeditaEvalaucionComponent } from './components/evaluacion/creaedita-
 import { PrototipoComponent } from './components/prototipo/prototipo.component';
 import { ListarPrototipoComponent } from './components/prototipo/listar-prototipo/listar-prototipo.component';
 import { CreaeditaPrototipoComponent } from './components/prototipo/creaedita-prototipo/creaedita-prototipo.component';
+import { ReporteComponent } from './components/reporte/reporte.component';
+import { ReporteproyectoporestadoComponent } from './components/reporte/reporteproyectoporestado/reporteproyectoporestado.component';
+import { ReporteterrenosporproyectoComponent } from './components/reporte/reporteterrenosporproyecto/reporteterrenosporproyecto.component';
+import { ComentarioComponent } from './components/comentario/comentario.component';
+import { ListarcomentarioComponent } from './components/comentario/listarcomentario/listarcomentario.component';
+import { CreaeditacomentarioComponent } from './components/comentario/creaeditacomentario/creaeditacomentario.component';
 
 
 export const routes: Routes = [
@@ -76,6 +82,15 @@ export const routes: Routes = [
         { path: '', component: ListarPrototipoComponent },
         { path: 'crear', component: CreaeditaPrototipoComponent },
         { path: 'editar/:id', component: CreaeditaPrototipoComponent }  // Add this line for editing
+    ]},
+    { path: 'comentarios', component: ComentarioComponent, canActivate: [AuthGuard], children: [
+        { path: '', component: ListarcomentarioComponent },
+        { path: 'crear', component: CreaeditacomentarioComponent },
+        { path: 'editar/:id', component: CreaeditacomentarioComponent }  // Add this line for editing
+    ]},
+    { path: 'reportes', component: ReporteComponent, canActivate: [AuthGuard], children: [
+        { path: 'proyectosporestado', component: ReporteproyectoporestadoComponent }, 
+        { path: 'terrenosporproyecto', component: ReporteterrenosporproyectoComponent },// Add this line for editing
     ]},
     { path: '**', redirectTo: 'login' }
 ];
