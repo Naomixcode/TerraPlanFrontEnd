@@ -1,0 +1,44 @@
+<div class="form-container">
+    <h2 class="form-title">{{ isEditMode ? 'Editar Proyecto' : 'Crear Proyecto' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        
+        <!-- ID Proyecto field - only visible in edit mode and read-only -->
+        <mat-form-field *ngIf="isEditMode" appearance="fill">
+            <mat-label>ID del Proyecto</mat-label>
+            <input matInput formControlName="idProyecto" readonly>
+        </mat-form-field>
+        
+        <!-- Nombre del Proyecto field -->
+        <mat-form-field appearance="fill">
+            <mat-label>Nombre del Proyecto</mat-label>
+            <input matInput formControlName="nombreProyecto" placeholder="Ingrese el nombre del proyecto">
+            <mat-error *ngIf="form.get('nombreProyecto')?.invalid && form.get('nombreProyecto')?.touched">
+                El nombre del proyecto es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Descripción del Proyecto field -->
+        <mat-form-field appearance="fill">
+            <mat-label>Descripción del Proyecto</mat-label>
+            <input matInput formControlName="descripcionProyecto" placeholder="Ingrese la descripción del proyecto">
+        </mat-form-field>
+
+        <!-- Estado del Proyecto field -->
+        <mat-form-field appearance="fill">
+            <mat-label>Estado del Proyecto</mat-label>
+            <input matInput formControlName="estadoProyecto" placeholder="Ingrese el estado del proyecto">
+        </mat-form-field>
+
+        <!-- Usuario Asociado dropdown -->
+        <mat-form-field appearance="fill">
+            <mat-label>Usuario Asociado</mat-label>
+            <mat-select formControlName="usuarioProyecto">
+                <mat-option *ngFor="let user of users" [value]="user.idUsuario">
+                    {{ user.nombreCompleto }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button type="submit">{{ isEditMode ? 'Actualizar Proyecto' : 'Crear Proyecto' }}</button>
+    </form>
+</div>

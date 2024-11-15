@@ -1,0 +1,59 @@
+<div class="form-container">
+    <h2 class="form-title">{{ isEditMode ? 'Editar Prototipo' : 'Crear Prototipo' }}</h2>
+    
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      
+      <!-- ID del Prototipo (Solo visible en modo de edición) -->
+      <mat-form-field *ngIf="isEditMode" appearance="fill">
+        <mat-label>ID del Prototipo</mat-label>
+        <input matInput formControlName="idPrototipo" readonly>
+      </mat-form-field>
+  
+      <!-- Fecha de Creación del Prototipo -->
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de Creación del Prototipo</mat-label>
+        <input matInput formControlName="fechaCreacionPrototipo" [matDatepicker]="picker" placeholder="Seleccione la fecha">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('fechaCreacionPrototipo')?.invalid && form.get('fechaCreacionPrototipo')?.touched">
+          La fecha de creación es requerida.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Descripción del Prototipo -->
+      <mat-form-field appearance="fill">
+        <mat-label>Descripción del Prototipo</mat-label>
+        <input matInput formControlName="descripcionPrototipo" placeholder="Ingrese una descripción del prototipo">
+        <mat-error *ngIf="form.get('descripcionPrototipo')?.invalid && form.get('descripcionPrototipo')?.touched">
+          La descripción del prototipo es requerida.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Tipo de Estructura del Prototipo -->
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo de Estructura del Prototipo</mat-label>
+        <input matInput formControlName="tipoEstructuraPrototipo" placeholder="Ingrese el tipo de estructura del prototipo">
+        <mat-error *ngIf="form.get('tipoEstructuraPrototipo')?.invalid && form.get('tipoEstructuraPrototipo')?.touched">
+          El tipo de estructura es requerido.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Plano Asociado (dropdown) -->
+      <mat-form-field appearance="fill">
+        <mat-label>Plano Asociado</mat-label>
+        <mat-select formControlName="plano">
+          <mat-option *ngFor="let plano of planos" [value]="plano.idPlano">
+            {{ plano.descripcionPlano }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('plano')?.invalid && form.get('plano')?.touched">
+          El plano es requerido.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Botón para Enviar el Formulario -->
+      <button mat-raised-button type="submit" [disabled]="form.invalid">
+        {{ isEditMode ? 'Actualizar Prototipo' : 'Crear Prototipo' }}
+      </button>
+    </form>
+  </div>

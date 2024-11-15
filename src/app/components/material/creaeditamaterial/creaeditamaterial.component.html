@@ -1,0 +1,37 @@
+<div class="container" style="text-align: center; margin: 5%;">
+    <div>
+      <h1>Registro de Materiales</h1>
+    </div>
+    <div>
+      <form class="example-form" [formGroup]="form" (submit)="aceptar()">
+        
+        <mat-form-field class="example-full-width" *ngIf="edicion">
+          <mat-label>Código</mat-label>
+          <input matInput formControlName="hcodigo" />
+        </mat-form-field>
+        <br/>
+  
+        <mat-form-field>
+          <mat-label>Tipo</mat-label>
+          <input matInput type="Nombre" formControlName="hcosto" />
+        </mat-form-field>
+        <br/>
+  
+        <mat-form-field>
+            <mat-label>Costo</mat-label>
+            <input matInput type="number" formControlName="hcosto" />
+          </mat-form-field>
+        <br/>
+  
+        <mat-form-field>
+          <mat-label>Cantidad</mat-label>
+          <input matInput type="number" formControlName="hcantidad" />
+        </mat-form-field>
+        
+        <div>
+          <button mat-flat-button class="custom-button">Aceptar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

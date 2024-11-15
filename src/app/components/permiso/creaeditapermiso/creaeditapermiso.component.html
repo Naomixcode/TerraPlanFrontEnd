@@ -1,0 +1,43 @@
+<div class="container" style="text-align: center;margin:5%">
+    <div><h1>Registro de Permisos</h1></div>
+    <div>
+      <form class="example-form" [formGroup]="form" (submit)="aceptar()">
+        
+        <mat-form-field>
+            <mat-label>Fecha de subida</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="hfecha">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+<br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="hnombre" />
+        </mat-form-field>
+
+<br/>    
+  
+        <mat-form-field class="example-full-width">
+          <mat-label>Descripción</mat-label>
+          <textarea matInput placeholder="Limpieza" formControlName="hdescripcion" ></textarea>
+        </mat-form-field>
+<br/>
+    
+        <mat-form-field>
+          <mat-label>Proyecto</mat-label>
+          <mat-select  formControlName="hproyecto">
+            @for (m of listaDispositivos; track m) {
+            <mat-option [value]="m.idProyecto">{{ m.nombreProyecto }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <br>        
+  
+        <div>
+          <button mat-flat-button class="custom-button">Aceptar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

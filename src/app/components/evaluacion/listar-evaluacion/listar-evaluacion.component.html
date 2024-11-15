@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="header">
+        <h1>Lista de Evaluaciones</h1>
+    </div>
+
+    <mat-form-field>
+        <mat-label>Filtrar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Evaluacion abc" #input>
+    </mat-form-field>
+
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <!-- Id Proyecto Column -->
+            <ng-container matColumnDef="c1">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Evaluacion</th>
+                <td mat-cell *matCellDef="let element">{{element.idEvaluacion}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="c2">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Creación</th>
+                <td mat-cell *matCellDef="let element">{{element.fechaEvaluacion | date}}</td>
+            </ng-container>
+            <!-- Nombre Proyecto Column -->
+            <ng-container matColumnDef="c3">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Resultado Evaluacion</th>
+                <td mat-cell *matCellDef="let element">{{element.resultadoEvaluacion}}</td>
+            </ng-container>
+
+            <!-- Descripción Proyecto Column -->
+            <ng-container matColumnDef="c4">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Comentario</th>
+                <td mat-cell *matCellDef="let element">{{element.comentariosEvaluacion}}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="c5">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Terreno</th>
+                <td mat-cell *matCellDef="let element">{{element.terreno.idTerreno}}</td>
+            </ng-container>
+
+            <!-- Edit Column -->
+            <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef>Editar</th>
+                <td mat-cell *matCellDef="let element" class="action-cell">
+                    <button mat-icon-button (click)="editEvaluacion(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <!-- Delete Column -->
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef>Eliminar</th>
+                <td mat-cell *matCellDef="let element" class="action-cell">
+                    <button mat-icon-button (click)="deleteEvaluacion(element.idEvaluacion)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="10">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+            </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de proyectos"></mat-paginator>
+    </div>
+</div>

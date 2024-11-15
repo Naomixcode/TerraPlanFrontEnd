@@ -1,0 +1,65 @@
+.container {
+    padding: 20px; /* Espacio alrededor del contenedor */
+}
+
+.header {
+    text-align: center; /* Centrar el texto del encabezado */
+    margin-bottom: 20px; /* Aumentar el espacio debajo del encabezado */
+}
+
+.mat-form-field {
+    width: 100%; /* Ancho completo para el campo de formulario */
+    margin-bottom: 20px; /* Espacio debajo del campo de filtro */
+}
+
+table {
+    width: 100%;
+}
+
+.action-cell {
+    text-align: center; /* Centrar los íconos en las celdas */
+}
+
+.mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+td, th {
+    width: 20%; /* Ancho de las columnas */
+}
+
+/* Ajustes para los botones de íconos */
+button.mat-icon-button {
+    padding: 0; /* Sin padding para botones de íconos */
+    margin: 0 10px; /* Espacio lateral entre íconos */
+    border: none; /* Quitar el borde */
+    background: none; /* Quitar el fondo */
+}
+
+/* Efecto al pasar el mouse sobre los íconos */
+button.mat-icon-button:hover {
+    background: none; /* Asegurarse de que no haya fondo al pasar el mouse */
+}
+
+/* Mejora de estilo para íconos */
+.mat-icon {
+    font-size: 20px; /* Tamaño de los íconos */
+    color: #6200ea; /* Color de los íconos */
+    transition: color 0.3s; /* Transición suave para el color */
+}
+
+/* Efecto al pasar el mouse sobre los íconos */
+.mat-icon-button:hover .mat-icon {
+    color: #3700b3; /* Cambiar color al pasar el mouse */
+}
+
+/* Títulos de la tabla */
+h1 {
+    font-size: 24px; /* Reducir el tamaño del título de la tabla */
+}
+
+/* Espacio adicional entre el navbar y el título de la tabla */
+.header {
+    margin-top: 30px; /* Aumentar el espacio entre el navbar y el título de la tabla */
+}

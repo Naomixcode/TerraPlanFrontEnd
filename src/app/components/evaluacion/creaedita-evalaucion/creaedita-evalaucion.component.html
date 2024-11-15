@@ -1,0 +1,59 @@
+<div class="form-container">
+    <h2 class="form-title">{{ isEditMode ? 'Editar Evaluación' : 'Crear Evaluación' }}</h2>
+    
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        
+        <!-- ID de la Evaluación (Solo visible en modo de edición) -->
+        <mat-form-field *ngIf="isEditMode" appearance="fill">
+            <mat-label>ID de Evaluación</mat-label>
+            <input matInput formControlName="idEvaluacion" readonly>
+        </mat-form-field>
+
+        <!-- Fecha de la Evaluación -->
+        <mat-form-field appearance="fill">
+            <mat-label>Fecha de la Evaluación</mat-label>
+            <input matInput formControlName="fechaEvaluacion" [matDatepicker]="picker" placeholder="Seleccione la fecha">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="form.get('fechaEvaluacion')?.invalid && form.get('fechaEvaluacion')?.touched">
+                La fecha de evaluación es requerida.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Comentarios de la Evaluación -->
+        <mat-form-field appearance="fill">
+            <mat-label>Comentario de la Evaluación</mat-label>
+            <input matInput formControlName="comentarioEvaluacion" placeholder="Ingrese un comentario sobre la evaluación">
+            <mat-error *ngIf="form.get('comentarioEvaluacion')?.invalid && form.get('comentarioEvaluacion')?.touched">
+                El comentario es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Resultado de la Evaluación -->
+        <mat-form-field appearance="fill">
+            <mat-label>Resultado de la Evaluación</mat-label>
+            <input matInput formControlName="resultadoEvaluacion" placeholder="Ingrese el resultado de la evaluación">
+            <mat-error *ngIf="form.get('resultadoEvaluacion')?.invalid && form.get('resultadoEvaluacion')?.touched">
+                El resultado de la evaluación es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Terreno Asociado (dropdown) -->
+        <mat-form-field appearance="fill">
+            <mat-label>Terreno Asociado</mat-label>
+            <mat-select formControlName="terreno">
+                <mat-option *ngFor="let terreno of terrenos" [value]="terreno.idTerreno">
+                    {{ terreno.descripcionTerreno }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('terreno')?.invalid && form.get('terreno')?.touched">
+                El terreno es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Botón para Enviar el Formulario -->
+        <button mat-raised-button type="submit" [disabled]="form.invalid">
+            {{ isEditMode ? 'Actualizar Evaluación' : 'Crear Evaluación' }}
+        </button>
+    </form>
+</div>

@@ -1,0 +1,46 @@
+<div class="form-container">
+    <h2 class="form-title">{{ isEditMode ? 'Editar Rol' : 'Crear Rol' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        
+        <!-- ID del Rol - Solo visible en modo de edición, no editable (readonly y disabled) -->
+        <mat-form-field *ngIf="isEditMode" appearance="fill">
+            <mat-label>ID del Rol</mat-label>
+            <input matInput [value]="roleId" readonly disabled>
+        </mat-form-field>
+        
+        <!-- Nombre del Rol -->
+        <mat-form-field appearance="fill">
+            <mat-label>Nombre del Rol</mat-label>
+            <mat-select formControlName="nombreRol">
+                <mat-option *ngFor="let role of roles" [value]="role">{{ role }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('nombreRol')?.invalid && form.get('nombreRol')?.touched">
+                El nombre del rol es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Descripción del Rol -->
+        <mat-form-field appearance="fill">
+            <mat-label>Descripción del Rol</mat-label>
+            <input matInput formControlName="descripcionRol" placeholder="Ingrese la descripción del rol">
+            <mat-error *ngIf="form.get('descripcionRol')?.invalid && form.get('descripcionRol')?.touched">
+                La descripción es requerida.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Usuario Asociado -->
+        <mat-form-field appearance="fill">
+            <mat-label>Usuario</mat-label>
+            <mat-select formControlName="usuario">
+                <mat-option *ngFor="let user of users" [value]="user.idUsuario">
+                    {{ user.nombreCompleto }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('usuario')?.invalid && form.get('usuario')?.touched">
+                El usuario es requerido.
+            </mat-error>
+        </mat-form-field>          
+
+        <button mat-raised-button type="submit">{{ isEditMode ? 'Actualizar Rol' : 'Crear Rol' }}</button>
+    </form>
+</div>
