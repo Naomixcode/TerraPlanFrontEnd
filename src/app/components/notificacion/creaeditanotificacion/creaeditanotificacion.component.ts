@@ -13,7 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Notificacion } from '../../../models/Notificacion';
 import { NotificacionService } from '../../../services/notificacion.service';
 import { User } from '../../../models/User';
-import { UserService } from '../../../services/user.service';
+import { UserService } from '../../../services/usuario.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Role } from '../../../models/Role'; 
-import { RoleService } from '../../../services/role.service'; 
+import { RoleService } from '../../../services/rol.service'; 
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
