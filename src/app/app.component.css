@@ -1,94 +1,45 @@
-/* app.component.css */
-.navbar {
+.custom-toolbar {
+    background-color: #C0FF72 !important;
+    color: #646B49;
     display: flex;
-    justify-content: space-between; /* Espacio entre los elementos */
+    justify-content: space-between;
     align-items: center;
-    background-color: #B63737; /* Color primario */
-    padding: 10px 20px;
-    color: white;
-}
-
-.navbar-brand {
-    font-size: 24px;
+    z-index: 100 !important;
+    height: 60px;
+  }
+  
+  .nav-button {
+    color: #646B49 !important;
     font-weight: bold;
-}
-
-/* Agrupar enlaces en un contenedor para centrar */
-.navbar-links {
+    text-transform: uppercase;
+    font-size: 12px; /* Reducir tamaño de la fuente */
+    padding: 0 8px; /* Reducir espacios laterales */
+  }
+  
+  .nav-button mat-icon {
+    margin-right: 4px; /* Reducir espacio entre icono y texto */
+    color: #646B49;
+  }
+  
+  .mat-menu-item {
     display: flex;
-    gap: 10px; /* Espacio entre enlaces */
-    justify-content: center; /* Centrar enlaces dentro de su contenedor */
-    flex-grow: 1; /* Permite que el contenedor de enlaces crezca */
-}
-
-.navbar-links a {
-    text-decoration: none;
-    color: white;
-    padding: 6px 10px; /* Padding reducido */
-    border-radius: 4px;
-    font-size: 14px; /* Tamaño de fuente reducido */
-    transition: background-color 0.3s;
-}
-
-.navbar-links a:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Efecto hover */
-}
-
-.logout-button {
-    background-color: #a9a161; /* Color verde que contrasta con #B63737 */
-    border: none;
-    color: white;
-    padding: 3px 10px; /* Padding reducido */
-    border-radius: 4px;
-    cursor: pointer;
-    height: 30px;
-    width: 100px;
-    transition: background-color 0.3s;
-    font-size: 12px; /* Tamaño de fuente del botón reducido */
-}
-
-.logout-button:hover {
-    background-color: #bebba6; /* Efecto hover del botón */
-}
-
-/* Responsividad */
-@media (max-width: 600px) {
-    .navbar {
-        flex-direction: column;
-        align-items: center; /* Centrar elementos en pantallas pequeñas */
-    }
-
-    .navbar-links {
-        flex-direction: column;
-        width: 100%; /* Hacer que los enlaces ocupen todo el ancho */
-        align-items: center; /* Centrar los enlaces verticalmente */
-    }
-
-    .navbar-links a, .logout-button {
-        width: 100%; /* Hacer que los enlaces y el botón ocupen todo el ancho */
-        text-align: center; /* Centrar el texto */
-    }
-}
-.navbar-links {
-    position: relative;
-}
-
-.dropdown-menu {
-    display: block; /* Mostrar solo cuando se activa */
-    position: absolute;
-    background: white; /* O el color que desees */
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1000; /* Para que aparezca sobre otros elementos */
-}
-
-.dropdown-menu a {
-    display: block; /* Que cada opción esté en una nueva línea */
-    padding: 10px;
-    text-decoration: none;
-    color: black;
-}
-
-.dropdown-menu a:hover {
-    background: #f0f0f0; /* Cambia el color al pasar el mouse */
-}
+    align-items: center;
+    font-size: 12px; /* Reducir tamaño de la fuente */
+  }
+  
+  .mat-menu-item mat-icon {
+    margin-right: 2px; /* Reducir espacio entre icono y texto */
+  }
+  
+  .left-menu {
+    display: flex;
+    align-items: center;
+    gap: 2px; /* Reducir espacio entre botones */
+  }
+  
+  .right-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Reducir espacio entre elementos */
+  }
+  
