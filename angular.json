@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "TerraPlanFrontEnd": {
+    "TerraPlan": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/terra-plan-front-end",
+            "outputPath": "dist/terra-plan",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -30,7 +30,12 @@
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "server": "src/main.server.ts",
+            "prerender": true,
+            "ssr": {
+              "entry": "server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -60,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "TerraPlanFrontEnd:build:production"
+              "buildTarget": "TerraPlan:build:production"
             },
             "development": {
-              "buildTarget": "TerraPlanFrontEnd:build:development"
+              "buildTarget": "TerraPlan:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -94,8 +99,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "379303a5-143a-4633-abf5-5241fd78938c"
   }
 }
