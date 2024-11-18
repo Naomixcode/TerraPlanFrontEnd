@@ -1,48 +1,41 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment'; // Asegúrate de importar el entorno
+import { HttpInterceptorFn } from '@angular/common/http';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { inject } from '@angular/core';
+import { catchError, throwError } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthService {
-  private apiUrl = `${environment.base}/login`; // Endpoint de login
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = sessionStorage.getItem('token');
+  const router = inject(Router);
 
-  constructor(private http: HttpClient) {}
+  // Clona la solicitud y añade el token si existe
+  const authReq = token
+    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+    : req;
 
-  // Método para iniciar sesión
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(this.apiUrl, { username, password });
-  }
+  return next(authReq).pipe(
+    catchError((error) => {
 
-  setToken(token: string) {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('token', token);
-    }
-  }
+      // Manejo de errores 401 (Unauthorized)
+      if (error.status === 401) {
+        const currentRoute = router.url; // Obtiene la ruta actual antes del error
 
-  getToken(): string | null {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('token');
-    }
-    return null;
-  }
+        // Extraer la ruta base de la URL actual
+        const baseRoute = currentRoute.split('/')[1]; // Obtiene la primera parte de la ruta
+        const redirectTo = `/${baseRoute}`; // Construye la ruta base a redirigir
 
-  // Método para cerrar sesión
-  logout() {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token'); // Elimina el token del almacenamiento
-    }
-  }
+        // Redirigir a la ruta base
+        router.navigate([redirectTo]).then(() => {
+          // Mostrar el SweetAlert después de la redirección
+          Swal.fire({
+            icon: 'error',
+            title: 'No Autorizado',
+            text: 'No tienes permisos para realizar esta acción o la accion que intentas realizar viola una restriccion de llave foranea.',
+          });
+        });
+      }
 
-  // Método para realizar una llamada HTTP que incluye el token
-  someHttpCall(): Observable<any> {
-    const token = this.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.get(`${environment.base}/users`, { headers });
-    }   
-}
+      return throwError(() => error);
+    })
+  );
+};
