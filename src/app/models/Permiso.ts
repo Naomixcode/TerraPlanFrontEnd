@@ -1,9 +1,8 @@
-import { Proyecto } from "./Proyecto";
-
 export class Permiso {
-    idPermiso: number = 0;
-    descripcionPermiso: string = "";
-    fechaSubida: Date = new Date(Date.now());
-    nombrePermiso: string = "";
-    proyecto: Proyecto= new Proyecto();
-  }
+  idPermiso: number = 0;
+  nombrePermiso: string = '';
+  descripcionPermiso: string = '';
+  fechaSubida: Date = new Date();
+  idProyecto?: number; // Relación con el proyecto, solo el ID
+  nombreProyecto?: string; // Nombre del proyecto, si es necesario para la visualización
+}

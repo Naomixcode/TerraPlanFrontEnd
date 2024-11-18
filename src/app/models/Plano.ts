@@ -1,23 +1,9 @@
-import { Terreno } from './Terreno'; // Asegúrate de que la ruta sea correcta
-
 export class Plano {
     idPlano: number = 0;
-    tipoPlano: string = "";
-    descripcionPlano: string = "";
-    fechaPlano: string = "";
-    terreno: Terreno;
-
-    constructor(
-        idPlano: number = 0,
-        tipoPlano: string = "",
-        descripcionPlano: string = "",
-        fechaPlano: string = "",
-        terreno: Terreno
-    ) {
-        this.idPlano = idPlano;
-        this.tipoPlano = tipoPlano;
-        this.descripcionPlano = descripcionPlano;
-        this.fechaPlano = fechaPlano;
-        this.terreno = terreno;
-    }
-}
+    tipoPlano: string = '';
+    descripcionPlano: string = '';
+    fechaPlano: Date = new Date();
+    idTerreno?: number; // Relación con el terreno, solo ID
+    descripcionTerreno?: string; // Descripción del terreno
+  }
+  

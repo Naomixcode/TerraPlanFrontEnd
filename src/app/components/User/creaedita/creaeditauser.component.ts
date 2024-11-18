@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { User } from '../../../models/User';
+import { User } from '../../../models/Usuario';
 import { UserService } from '../../../services/usuario.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';

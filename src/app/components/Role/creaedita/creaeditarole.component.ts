@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '../../../models/User'; 
-import { Role } from '../../../models/Role'; 
+import { User } from '../../../models/Usuario'; 
+import { Role } from '../../../models/Rol'; 
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../services/usuario.service'; 
 import { RoleService } from '../../../services/rol.service'; 

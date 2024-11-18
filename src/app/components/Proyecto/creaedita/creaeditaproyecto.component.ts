@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { User } from '../../../models/User'; 
+import { User } from '../../../models/Usuario'; 
 import { Proyecto } from '../../../models/Proyecto';
 import { UserService } from '../../../services/usuario.service'; 
 import { ProyectoService } from '../../../services/proyecto.service'; 

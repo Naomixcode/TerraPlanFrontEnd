@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Notificacion } from '../../../models/Notificacion';
 import { NotificacionService } from '../../../services/notificacion.service';
-import { User } from '../../../models/User';
+import { User } from '../../../models/Usuario';
 import { UserService } from '../../../services/usuario.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';

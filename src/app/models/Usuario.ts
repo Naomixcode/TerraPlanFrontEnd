@@ -1,4 +1,4 @@
-import { Role } from './Role'; // Asegúrate de que la ruta sea correcta
+import { Role } from './Rol'; // Asegúrate de que la ruta sea correcta
 import { Proyecto } from './Proyecto'; // Ajusta según la ruta
 import { Comentario } from './Comentario'; // Ajusta según la ruta
 
