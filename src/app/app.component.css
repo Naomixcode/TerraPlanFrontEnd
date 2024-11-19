@@ -1,45 +1,44 @@
 .custom-toolbar {
-    background-color: #C0FF72 !important;
-    color: #646B49;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 100 !important;
-    height: 60px;
-  }
-  
-  .nav-button {
-    color: #646B49 !important;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 12px; /* Reducir tamaño de la fuente */
-    padding: 0 8px; /* Reducir espacios laterales */
-  }
-  
-  .nav-button mat-icon {
-    margin-right: 4px; /* Reducir espacio entre icono y texto */
-    color: #646B49;
-  }
-  
-  .mat-menu-item {
-    display: flex;
-    align-items: center;
-    font-size: 12px; /* Reducir tamaño de la fuente */
-  }
-  
-  .mat-menu-item mat-icon {
-    margin-right: 2px; /* Reducir espacio entre icono y texto */
-  }
-  
-  .left-menu {
-    display: flex;
-    align-items: center;
-    gap: 2px; /* Reducir espacio entre botones */
-  }
-  
-  .right-menu {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Reducir espacio entre elementos */
-  }
-  
+  background-color: #C0FF72 !important;
+  color: #646B49;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100 !important;
+  height: 60px;
+}
+
+.nav-button {
+  color: #646B49 !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px; /* Reducir tamaño de la fuente */
+  padding: 0 8px; /* Reducir espacios laterales */
+}
+
+.nav-button mat-icon {
+  margin-right: 4px; /* Reducir espacio entre icono y texto */
+  color: #646B49;
+}
+
+.mat-menu-item {
+  display: flex;
+  align-items: center;
+  font-size: 12px; /* Reducir tamaño de la fuente */
+}
+
+.mat-menu-item mat-icon {
+  margin-right: 2px; /* Reducir espacio entre icono y texto */
+}
+
+.left-menu {
+  display: flex;
+  align-items: center;
+  gap: 2px; /* Reducir espacio entre botones */
+}
+
+.right-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Reducir espacio entre elementos */
+}

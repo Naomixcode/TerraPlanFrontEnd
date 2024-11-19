@@ -1,236 +1,235 @@
 <div *ngIf="router.url !== '/login'">
-    <!-- Barra de navegación -->
-    <mat-toolbar class="custom-toolbar">
-      <!-- Menú izquierdo -->
-      <div class="left-menu">
-        <button mat-button routerLink="/home" class="nav-button">
-          <mat-icon>home</mat-icon>
-          Home
-        </button>
-        <button *ngIf="isAdmin()" mat-button [matMenuTriggerFor]="menuUser" class="nav-button">
-          <mat-icon>person</mat-icon>
-          Usuarios
-        </button>
-        <button *ngIf="isAdmin()" mat-button [matMenuTriggerFor]="menuRole" class="nav-button">
-          <mat-icon>people</mat-icon>
-          Roles
-        </button>      
-        <button mat-button [matMenuTriggerFor]="menuNotification" class="nav-button">
-          <mat-icon>notifications</mat-icon>
-          Notificaciones
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuProyect" class="nav-button">
-          <mat-icon>assignment</mat-icon>
-          Proyectos
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuPermission" class="nav-button">
-          <mat-icon>lock</mat-icon>
-          Permisos
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuComment" class="nav-button">
-          <mat-icon>comment</mat-icon>
-          Comentarios
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuAssessment" class="nav-button">
-          <mat-icon>check_circle</mat-icon>
-          Evaluaciones
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuLands" class="nav-button">
-          <mat-icon>landscape</mat-icon>
-          Terrenos
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuPlans" class="nav-button">
-          <mat-icon>map</mat-icon>
-          Planos
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuPrototype" class="nav-button">
-          <mat-icon>widgets</mat-icon>
-          Prototipos
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuPrototypeMaterial" class="nav-button">
-          <mat-icon>construction</mat-icon>
-          Material de Prototipos
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuMaterial" class="nav-button">
-          <mat-icon>inventory</mat-icon>
-          Material
-        </button>
-        <button mat-button [matMenuTriggerFor]="menuReports" class="nav-button">
-          <mat-icon>bar_chart</mat-icon>
-          Reportes
-        </button>
-      </div>    
+  <!-- Barra de navegación -->
+  <mat-toolbar class="custom-toolbar">
+    <!-- Menú izquierdo -->
+    <div class="left-menu">
+      <button mat-button routerLink="/home" class="nav-button">
+        <mat-icon>home</mat-icon>
+        Home
+      </button>
+      <button *ngIf="isAdmin()" mat-button [matMenuTriggerFor]="menuUser" class="nav-button">
+        <mat-icon>person</mat-icon>
+        Usuarios
+      </button>
+      <button *ngIf="isAdmin()" mat-button [matMenuTriggerFor]="menuRole" class="nav-button">
+        <mat-icon>people</mat-icon>
+        Roles
+      </button>      
+      <button mat-button [matMenuTriggerFor]="menuNotification" class="nav-button">
+        <mat-icon>notifications</mat-icon>
+        Notificaciones
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuProyect" class="nav-button">
+        <mat-icon>assignment</mat-icon>
+        Proyectos
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuPermission" class="nav-button">
+        <mat-icon>lock</mat-icon>
+        Permisos
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuComment" class="nav-button">
+        <mat-icon>comment</mat-icon>
+        Comentarios
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuAssessment" class="nav-button">
+        <mat-icon>check_circle</mat-icon>
+        Evaluaciones
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuLands" class="nav-button">
+        <mat-icon>landscape</mat-icon>
+        Terrenos
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuPlans" class="nav-button">
+        <mat-icon>map</mat-icon>
+        Planos
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuPrototype" class="nav-button">
+        <mat-icon>widgets</mat-icon>
+        Prototipos
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuPrototypeMaterial" class="nav-button">
+        <mat-icon>construction</mat-icon>
+        Material de Prototipos
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuMaterial" class="nav-button">
+        <mat-icon>inventory</mat-icon>
+        Material
+      </button>
+      <button mat-button [matMenuTriggerFor]="menuReports" class="nav-button">
+        <mat-icon>bar_chart</mat-icon>
+        Reportes
+      </button>
+    </div>    
+
+    <!-- Menú derecho -->
+    <div class="right-menu">
+      <button mat-button [matMenuTriggerFor]="menuSalir" class="nav-button">
+        <mat-icon>person</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <!-- Menús desplegables -->
+  <mat-menu #menuUser="matMenu">
+    <button mat-menu-item routerLink="/usuarios" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Usuarios
+    </button>
+    <button mat-menu-item routerLink="/usuarios/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nuevo Usuario
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuRole="matMenu">
+    <button mat-menu-item routerLink="/rol" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Roles
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuNotification="matMenu">
+    <button mat-menu-item routerLink="/notificaciones" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Notificaciones
+    </button>
+    <button mat-menu-item routerLink="/notificaciones/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nueva Notificacion
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuProyect="matMenu">
+    <button mat-menu-item routerLink="/proyectos" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Proyectos
+    </button>
+    <button mat-menu-item routerLink="/proyectos/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nuevo Proyecto
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuPermission="matMenu">
+    <button mat-menu-item routerLink="/permisos" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Permisos
+    </button>
+    <button mat-menu-item routerLink="/permisos/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nuevo Permiso
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuComment="matMenu">
+    <button mat-menu-item routerLink="/comentarios" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Comentarios
+    </button>
+    <button mat-menu-item routerLink="/comentarios/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nuevo Comentario
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuAssessment="matMenu">
+    <button mat-menu-item routerLink="/evaluaciones" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Evaluaciones
+    </button>
+    <button mat-menu-item routerLink="/evaluaciones/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nueva Evaluacion
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuLands="matMenu">
+    <button mat-menu-item routerLink="/terrenos" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Terrenos
+    </button>
+    <button mat-menu-item routerLink="/terrenos/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nuevo Terreno
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuPlans="matMenu">
+    <button mat-menu-item routerLink="/planos" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Planos
+    </button>
+    <button mat-menu-item routerLink="/planos/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nuevo Plano
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuPrototype="matMenu">
+    <button mat-menu-item routerLink="/prototipos" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Prototipos
+    </button>
+    <button mat-menu-item routerLink="/prototipos/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nuevo Prototipo
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuPrototypeMaterial="matMenu">
+    <button mat-menu-item routerLink="/prototipos-material" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Material de Prototipo
+    </button>
+    <button mat-menu-item routerLink="/prototipos-material/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nuevo Material de Prototipo
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuMaterial="matMenu">
+    <button mat-menu-item routerLink="/materiales" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">list</mat-icon>
+      Listar Material
+    </button>
+    <button mat-menu-item routerLink="/materiales/nuevo" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">add</mat-icon>
+      Nuevo Material
+    </button>
+  </mat-menu>
+
+  <mat-menu #menuReports="matMenu">
+    <!-- Opción para comentarios por usuario (gráfico circular) -->
+    <button mat-menu-item routerLink="/reportes/comentarios-por-usuario" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">donut_large</mat-icon>
+      Comentarios por Usuario
+    </button>
   
-      <!-- Menú derecho -->
-      <div class="right-menu">
-        <button mat-button [matMenuTriggerFor]="menuSalir" class="nav-button">
-          <mat-icon>person</mat-icon>
-        </button>
-      </div>
-    </mat-toolbar>
+    <!-- Opción para proyectos por usuario (gráfico de barras horizontales) -->
+    <button mat-menu-item routerLink="/reportes/proyectos-por-usuario" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">bar_chart</mat-icon>
+      Proyectos por Usuario
+    </button>
   
-    <!-- Menús desplegables -->
-    <mat-menu #menuUser="matMenu">
-      <button mat-menu-item routerLink="/usuarios" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Usuarios
-      </button>
-      <button mat-menu-item routerLink="/usuarios/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nuevo Usuario
-      </button>
-    </mat-menu>
+    <!-- Opción para proyectos por estado (gráfico de barras verticales) -->
+    <button mat-menu-item routerLink="/reportes/proyectos-por-estado" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">insert_chart</mat-icon>
+      Proyectos por Estado
+    </button>
   
-    <mat-menu #menuRole="matMenu">
-      <button mat-menu-item routerLink="/rol" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Roles
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuNotification="matMenu">
-      <button mat-menu-item routerLink="/notificaciones" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Notificaciones
-      </button>
-      <button mat-menu-item routerLink="/notificaciones/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nueva Notificacion
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuProyect="matMenu">
-      <button mat-menu-item routerLink="/proyectos" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Proyectos
-      </button>
-      <button mat-menu-item routerLink="/proyectos/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nuevo Proyecto
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuPermission="matMenu">
-      <button mat-menu-item routerLink="/permisos" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Permisos
-      </button>
-      <button mat-menu-item routerLink="/permisos/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nuevo Permiso
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuComment="matMenu">
-      <button mat-menu-item routerLink="/comentarios" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Comentarios
-      </button>
-      <button mat-menu-item routerLink="/comentarios/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nuevo Comentario
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuAssessment="matMenu">
-      <button mat-menu-item routerLink="/evaluaciones" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Evaluaciones
-      </button>
-      <button mat-menu-item routerLink="/evaluaciones/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nueva Evaluacion
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuLands="matMenu">
-      <button mat-menu-item routerLink="/terrenos" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Terrenos
-      </button>
-      <button mat-menu-item routerLink="/terrenos/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nuevo Terreno
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuPlans="matMenu">
-      <button mat-menu-item routerLink="/planos" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Planos
-      </button>
-      <button mat-menu-item routerLink="/planos/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nuevo Plano
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuPrototype="matMenu">
-      <button mat-menu-item routerLink="/prototipos" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Prototipos
-      </button>
-      <button mat-menu-item routerLink="/prototipos/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nuevo Prototipo
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuPrototypeMaterial="matMenu">
-      <button mat-menu-item routerLink="/prototipos-material" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Material de Prototipo
-      </button>
-      <button mat-menu-item routerLink="/prototipos-material/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nuevo Material de Prototipo
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuMaterial="matMenu">
-      <button mat-menu-item routerLink="/materiales" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">list</mat-icon>
-        Listar Material
-      </button>
-      <button mat-menu-item routerLink="/materiales/nuevo" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">add</mat-icon>
-        Nuevo Material
-      </button>
-    </mat-menu>
-  
-    <mat-menu #menuReports="matMenu">
-      <!-- Opción para comentarios por usuario (gráfico circular) -->
-      <button mat-menu-item routerLink="/reportes/comentarios-por-usuario" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">donut_large</mat-icon>
-        Comentarios por Usuario
-      </button>
-    
-      <!-- Opción para proyectos por usuario (gráfico de barras horizontales) -->
-      <button mat-menu-item routerLink="/reportes/proyectos-por-usuario" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">bar_chart</mat-icon>
-        Proyectos por Usuario
-      </button>
-    
-      <!-- Opción para proyectos por estado (gráfico de barras verticales) -->
-      <button mat-menu-item routerLink="/reportes/proyectos-por-estado" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">insert_chart</mat-icon>
-        Proyectos por Estado
-      </button>
-    
-      <!-- Opción para terrenos por proyecto (gráfico de líneas) -->
-      <button mat-menu-item routerLink="/reportes/terrenos-por-proyecto" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">show_chart</mat-icon>
-        Terrenos por Proyecto
-      </button>
-    </mat-menu>  
-  
-    <mat-menu #menuSalir="matMenu">
-      <button mat-menu-item routerLink="/login" (click)="cerrar()" class="custom-menu-item" style="color: #646b49;">
-        <mat-icon style="color: #646b49;">logout</mat-icon>
-        Cerrar sesión
-      </button>
-    </mat-menu>
-  </div>
-  
-  <router-outlet></router-outlet>
-  
+    <!-- Opción para terrenos por proyecto (gráfico de líneas) -->
+    <button mat-menu-item routerLink="/reportes/terrenos-por-proyecto" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">show_chart</mat-icon>
+      Terrenos por Proyecto
+    </button>
+  </mat-menu>  
+
+  <mat-menu #menuSalir="matMenu">
+    <button mat-menu-item routerLink="/login" (click)="cerrar()" class="custom-menu-item" style="color: #646b49;">
+      <mat-icon style="color: #646b49;">logout</mat-icon>
+      Cerrar sesión
+    </button>
+  </mat-menu>
+</div>
+
+<router-outlet></router-outlet>
