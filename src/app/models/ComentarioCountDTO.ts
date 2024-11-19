@@ -1,5 +1,4 @@
 export interface ComentarioCountDTO {
-    nombreUsuario: string;
-    cantidadComentarios: number;
-  }
-  
+  nombreUsuario: string;
+  cantidadComentarios: number;
+}
