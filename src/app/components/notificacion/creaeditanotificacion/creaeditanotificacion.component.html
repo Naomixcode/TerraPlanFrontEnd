@@ -1,42 +1,68 @@
-<div class="container" style="text-align: center;margin:5%">
-    <div><h1>Registro de Mantenimientos</h1></div>
-    <div>
-      <form class="example-form" [formGroup]="form" (submit)="aceptar()">
-        
-        <mat-form-field>
-            <mat-label>Fecha de Notificacion</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="hfecha">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-<br>
-        <mat-form-field class="example-full-width">
-          <mat-label>Titulo</mat-label>
-          <input matInput formControlName="htitulo" />
-        </mat-form-field>
+<div class="container">
+  <h1>{{ isEditMode ? 'Editar Notificación' : 'Registrar Notificación' }}</h1>
+  <form [formGroup]="notificationForm" (ngSubmit)="saveNotification()">
+      <!-- Campo ID Notificación (solo visible en edición) -->
+      <mat-form-field class="filter-field" *ngIf="isEditMode" appearance="outline">
+          <mat-label>ID de Notificación</mat-label>
+          <input matInput formControlName="idNotificacion" />
+      </mat-form-field>
 
-<br/>    
-  
-        <mat-form-field class="example-full-width">
+      <!-- Campo Título Notificación -->
+      <mat-form-field class="filter-field" appearance="outline">
+          <mat-label>Título</mat-label>
+          <input matInput formControlName="tituloNotificacion" required />
+          <div
+              *ngIf="notificationForm.get('tituloNotificacion')?.invalid && notificationForm.get('tituloNotificacion')?.touched"
+              class="no-data-message"
+          >
+              {{ notificationForm.get('tituloNotificacion')?.hasError('required') ? 'El título es obligatorio.' : '' }}
+              {{ notificationForm.get('tituloNotificacion')?.hasError('minlength') ? 'Debe tener al menos 3 caracteres.' : '' }}
+          </div>
+      </mat-form-field>
+
+      <!-- Campo Mensaje Notificación -->
+      <mat-form-field class="filter-field" appearance="outline">
           <mat-label>Mensaje</mat-label>
-          <textarea matInput placeholder="Limpieza" formControlName="hmensaje" ></textarea>
-        </mat-form-field>
-<br/>
-    
-        <mat-form-field>
+          <textarea matInput formControlName="mensajeNotificacion" rows="3" required></textarea>
+          <div
+              *ngIf="notificationForm.get('mensajeNotificacion')?.invalid && notificationForm.get('mensajeNotificacion')?.touched"
+              class="no-data-message"
+          >
+              {{ notificationForm.get('mensajeNotificacion')?.hasError('required') ? 'El mensaje es obligatorio.' : '' }}
+              {{ notificationForm.get('mensajeNotificacion')?.hasError('minlength') ? 'Debe tener al menos 10 caracteres.' : '' }}
+          </div>
+      </mat-form-field>
+
+      <!-- Campo Fecha Notificación -->
+      <mat-form-field class="filter-field" appearance="outline">
+          <mat-label>Fecha</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="fechaNotificacion" required />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker touchUi="true" [startAt]="startDate"></mat-datepicker>
+          <mat-error *ngIf="notificationForm.get('fechaNotificacion')?.invalid">
+              Seleccione una fecha válida.
+          </mat-error>
+      </mat-form-field>
+
+      <!-- Campo Usuario -->
+      <mat-form-field class="filter-field" appearance="outline">
           <mat-label>Usuario</mat-label>
-          <mat-select  formControlName="husuario">
-            @for (m of listaDispositivos; track m) {
-            <mat-option [value]="m.idUsuario">{{ m.nombreCompleto }}</mat-option>
-            }
+          <mat-select formControlName="idUsuario">
+              <mat-option *ngFor="let usuario of usuariosDisponibles" [value]="usuario.idUsuario">
+                  {{ usuario.nombreCompleto }}
+              </mat-option>
           </mat-select>
-        </mat-form-field>
-        <br>        
-  
-        <div>
-          <button mat-flat-button class="custom-button">Aceptar</button>
-        </div>
-      </form>
-    </div>
-  </div>
+          <mat-error *ngIf="notificationForm.get('idUsuario')?.invalid">
+              Seleccione un usuario.
+          </mat-error>
+      </mat-form-field>
+
+      <!-- Botones -->
+      <div class="button-container">
+          <button mat-flat-button color="primary" type="submit">
+              {{ isEditMode ? 'Guardar Cambios' : 'Registrar' }}
+          </button>
+          <button mat-button type="button" (click)="navigateToNotificaciones()">Cancelar</button>
+      </div>
+  </form>
+</div>

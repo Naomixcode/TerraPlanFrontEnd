@@ -1,37 +1,49 @@
-<div class="container" style="text-align: center; margin: 5%;">
-    <div>
-      <h1>Registro de Materiales</h1>
+<div class="container">
+  <h1>{{ isEditMode ? 'Editar Material' : 'Registrar Material' }}</h1>
+  <form [formGroup]="materialForm" (ngSubmit)="saveMaterial()">
+    <!-- Campo ID Material (visible solo en edición) -->
+    <mat-form-field class="filter-field" *ngIf="isEditMode" appearance="outline">
+      <mat-label>ID de Material</mat-label>
+      <input matInput formControlName="idMaterial" />
+    </mat-form-field>
+
+    <!-- Campo Tipo de Material -->
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Tipo de Material</mat-label>
+      <mat-select formControlName="tipoMaterial" required>
+        <mat-option *ngFor="let material of materialTypes" [value]="material">
+          {{ material }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="materialForm.get('tipoMaterial')?.invalid">
+        El tipo de material es obligatorio.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Campo Costo del Material -->
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Costo del Material</mat-label>
+      <input matInput type="number" formControlName="costoMaterial" required />
+      <mat-error *ngIf="materialForm.get('costoMaterial')?.invalid">
+        El costo es obligatorio y debe ser mayor o igual a 0.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Campo Cantidad del Material -->
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Cantidad Disponible</mat-label>
+      <input matInput type="number" formControlName="cantidadMaterial" required />
+      <mat-error *ngIf="materialForm.get('cantidadMaterial')?.invalid">
+        La cantidad es obligatoria y debe ser mayor o igual a 0.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Botones -->
+    <div class="button-container">
+      <button mat-flat-button color="primary" type="submit">
+        {{ isEditMode ? 'Guardar Cambios' : 'Registrar' }}
+      </button>
+      <button mat-button type="button" (click)="navigateToMaterials()">Cancelar</button>
     </div>
-    <div>
-      <form class="example-form" [formGroup]="form" (submit)="aceptar()">
-        
-        <mat-form-field class="example-full-width" *ngIf="edicion">
-          <mat-label>Código</mat-label>
-          <input matInput formControlName="hcodigo" />
-        </mat-form-field>
-        <br/>
-  
-        <mat-form-field>
-          <mat-label>Tipo</mat-label>
-          <input matInput type="Nombre" formControlName="hcosto" />
-        </mat-form-field>
-        <br/>
-  
-        <mat-form-field>
-            <mat-label>Costo</mat-label>
-            <input matInput type="number" formControlName="hcosto" />
-          </mat-form-field>
-        <br/>
-  
-        <mat-form-field>
-          <mat-label>Cantidad</mat-label>
-          <input matInput type="number" formControlName="hcantidad" />
-        </mat-form-field>
-        
-        <div>
-          <button mat-flat-button class="custom-button">Aceptar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-  
+  </form>
+</div>

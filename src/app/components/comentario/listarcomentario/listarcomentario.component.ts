@@ -1,86 +1,84 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Comentario } from '../../../models/Comentario';
-import { ComentarioService } from '../../../services/comentario.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterModule, Router } from '@angular/router';
-import Swal from 'sweetalert2';
-
+import { MatCardModule } from '@angular/material/card'; // Importar MatCardModule
+import { CommonModule } from '@angular/common';
+import { Evaluacion } from '../../../models/Evaluacion';
+import { EvaluacionService } from '../../../services/evaluacion.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-listarcomentario',
+  selector: 'app-listarevaluacion',
   standalone: true,
-  imports: [MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatInputModule,
-    MatFormFieldModule,
+  imports: [
     CommonModule,
-    RouterModule],
-  templateUrl: './listarcomentario.component.html',
-  styleUrl: './listarcomentario.component.css'
+    MatIconModule,
+    MatButtonModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    RouterModule,
+  ],
+  templateUrl: './listarevaluacion.component.html',
+  styleUrls: ['./listarevaluacion.component.css'],
 })
-export class ListarcomentarioComponent {
-  dataSource: MatTableDataSource<Comentario> = new MatTableDataSource();
-  displayedColumns: string[] = ['c1', 'c2', 'c3', 'c4', 'c5','c6', 'edit', 'delete'];
+export class ListarEvaluacionComponent implements OnInit {
+  evaluacionDataSource: MatTableDataSource<Evaluacion> = new MatTableDataSource();
+  paginatedEvaluaciones: Evaluacion[] = []; // Evaluaciones visibles en la página actual
+  pageSize = 5; // Tamaño de página inicial
+  currentPage = 0; // Página actual
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) evaluacionPaginator!: MatPaginator;
 
-  constructor(
-    private comentarioService: ComentarioService,
-    private router: Router
-  ) {}
+  constructor(private evaluacionService: EvaluacionService) {}
 
   ngOnInit(): void {
-    this.comentarioService.list().subscribe(data => {
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }, error => {
-      console.error('Error fetching comentarios:', error);
+    this.loadEvaluaciones();
+  }
+
+  // Carga la lista de evaluaciones
+  loadEvaluaciones(): void {
+    this.evaluacionService.list().subscribe((data) => {
+      this.evaluacionDataSource.data = data;
+      this.updatePaginatedEvaluaciones();
     });
   }
 
-  applyFilter(event: Event) {
+  // Actualiza la lista de evaluaciones según la página actual
+  updatePaginatedEvaluaciones(): void {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedEvaluaciones = this.evaluacionDataSource.filteredData.slice(
+      startIndex,
+      endIndex
+    );
+  }
+
+  // Filtro para las evaluaciones
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.evaluacionDataSource.filter = filterValue.trim().toLowerCase();
+    this.currentPage = 0; // Reiniciar a la primera página después de filtrar
+    this.updatePaginatedEvaluaciones();
   }
 
-  editComentario(comentario: Comentario) {
-    this.router.navigate(['/comentarios/editar', comentario.idComentario]);
+  // Maneja el cambio de página
+  onPageChange(event: any): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updatePaginatedEvaluaciones();
   }
 
-  deleteComentario(comentarioId: number): void {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: "¡No podrás revertir esto!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminarlo!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.comentarioService.delete(comentarioId).subscribe({
-          next: () => {
-            Swal.fire('¡Eliminado!', 'El comentario ha sido eliminado.', 'success');
-            this.dataSource.data = this.dataSource.data.filter(comentario => comentario.idComentario !== comentarioId);
-          },
-          error: (err) => {
-            Swal.fire('Error', 'Hubo un problema al eliminar el comentario. Inténtalo de nuevo más tarde.', 'error');
-          }
-        });
-      }
+  // Elimina una evaluación por ID
+  deleteEvaluacion(idEvaluacion: number): void {
+    this.evaluacionService.delete(idEvaluacion).subscribe(() => {
+      this.loadEvaluaciones(); // Refresca la lista después de eliminar
     });
   }
 }

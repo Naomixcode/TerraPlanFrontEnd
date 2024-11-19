@@ -1,63 +1,56 @@
-<div class="container">
-
-  <div  style="text-align: center;margin: 5%;"><h1> Materiales </h1></div>
-  <p>Total de registros: {{ cantidadRegistros }}</p>
-  <div>
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-          <ng-container matColumnDef="c1">
-           <th mat-header-cell *matHeaderCellDef> Código </th>
-           <td mat-cell *matCellDef="let element"> {{element.idMaterial}} </td>
-          </ng-container>
-
-
-          <ng-container matColumnDef="c2">
-           <th mat-header-cell *matHeaderCellDef> tipo </th>
-           <td mat-cell *matCellDef="let element"> {{element.tipoMaterial}}  </td>
-          </ng-container>
-
-          <ng-container matColumnDef="c3">
-           <th mat-header-cell *matHeaderCellDef> costo</th>
-           <td mat-cell *matCellDef="let element"> {{element.costoMaterial}} </td>
-          </ng-container>
-
-          
-          <ng-container matColumnDef="c4">
-              <th mat-header-cell *matHeaderCellDef> precio </th>
-              <td mat-cell *matCellDef="let element"> {{element.cantidadMaterial}} </td>
-             </ng-container>
-
-             <ng-container matColumnDef="accion01">
-              <th mat-header-cell *matHeaderCellDef> Eliminar </th>
-              <td mat-cell *matCellDef="let element" (click)="eliminar(element.idDevice)" >
-                <mat-icon style="color:hsl(4, 97%, 48%) ;">delete</mat-icon>
-              </td>
-             </ng-container>
-
-
-           <ng-container matColumnDef="accion02">
-            <th mat-header-cell *matHeaderCellDef> Actualizar </th>
-            <td mat-cell *matCellDef="let element"  [routerLink]="['editar',element.idDevice]">
-              <mat-icon style="color:hsl(4, 97%, 48%) ;">edit</mat-icon>
-            </td>
-           </ng-container>
-
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-          
-
-          
-
-
-         </table>
-
-         <mat-paginator [pageSizeOptions]="[4, 8, 10]" aria-label="Select page of users"></mat-paginator>
-
-        
-
-
+<div class="list-wrapper">
+  <div class="list-header">
+    <h1>Lista de Materiales</h1>
+    <p>Cantidad de registros: {{ materialDataSource.data.length }}</p>
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Filtrar por Tipo de Material</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar" />
+    </mat-form-field>
   </div>
+
+  <div class="card-container">
+    <mat-card
+      *ngFor="let material of paginatedMaterials"
+      class="styled-card"
+      [ngClass]="getCardClass(material.tipoMaterial)"
+    >
+      <!-- Espacio reservado para la imagen -->
+      <div class="image-container"></div>
+
+      <mat-card-header>
+        <mat-card-title>Material ID: {{ material.idMaterial }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Tipo:</strong> {{ material.tipoMaterial }}</p>
+        <p><strong>Costo:</strong> {{ material.costoMaterial | currency }}</p>
+        <p><strong>Cantidad:</strong> {{ material.cantidadMaterial }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-icon-button color="warn" (click)="deleteMaterial(material.idMaterial)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          [routerLink]="['/materiales/editar', material.idMaterial]"
+        >
+          <mat-icon>edit</mat-icon> Editar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>  
+
+  <!-- Mensaje de "No hay coincidencias" -->
+  <div *ngIf="materialDataSource.filteredData.length === 0" class="no-data-message">
+    No hay coincidencias.
+  </div>
+
+  <!-- Paginador -->
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    [length]="materialDataSource.filteredData.length"
+    [pageSize]="pageSize"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
 </div>

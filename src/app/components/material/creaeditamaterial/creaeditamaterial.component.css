@@ -1,16 +1,165 @@
-mat-form-field{
-    width: 60%;
-}
-.custom-button {
-    background-color: hsl(4, 97%, 48%);   
-    color: white;   
-}
-mat-form-field{
-    width: 60%;
-}
-.custom-button {
-    background-color: hsl(4, 97%, 48%);   
-    color: white;   
-}
+/* Fondo general */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #FEF0E7 !important; /* Forzar el color de fondo */
+  }
   
+  :host {
+    display: block;
+    height: 100vh;
+    background-color: #FEF0E7 !important; /* Forzar el fondo desde el componente */
+  }
+  
+  .container {
+    background-color: #FEF0E7 !important; /* Aplicar color al contenedor */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    padding: 20px;
+  }
+
+/* Encabezado */
+h1 {
+  color: #646B49;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+    color: #646B49;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilos para los campos de entrada */
+mat-form-field {
+  width: 100%;
+  max-width: 800px; /* Ancho ajustado */
+  background-color: transparent; /* Fondo transparente */
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.mat-form-field-wrapper {
+  padding: 8px;
+}
+
+/* Mensajes de error */
+mat-error {
+  font-size: 0.8rem;
+  color: red;
+  margin-top: -10px; /* Eliminamos espacio extra */
+}
+
+/* Botones */
+button {
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button[mat-flat-button] {
+  background-color: #7CC820; /* Verde del botón */
+  color: white;
+}
+
+button[mat-flat-button]:hover {
+  background-color: #6AB218;
+}
+
+button[mat-button] {
+  color: #646B49;
+}
+
+/* Centrado del checkbox */
+.checkbox-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+mat-checkbox {
+  color: #646B49;
+}
+
+mat-checkbox .mat-checkbox-label {
+  color: #646B49;
+  font-size: 1rem;
+}
+
+/* Botones centrados */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Estilos para los campos de entrada */
+.filter-field {
+    width: 100%;
+    max-width: 800px; /* Ajusta el ancho */
+    margin-bottom: 10px;
+  }
+  
+  .mat-form-field {
+    width: 100%;
+    max-width: 800px;
+    background-color: transparent; /* Fondo transparente */
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+  
+  .mat-form-field-wrapper {
+    padding: 0;
+  }
+
+
+/* Estilos para los campos de entrada */
+.filter-field {
+    width: 100%;
+    max-width: 800px; /* Ajusta el ancho */
+    margin-bottom: 10px;
+  }
+  
+  .mat-form-field {
+    width: 100%;
+    max-width: 800px;
+    background-color: transparent; /* Fondo transparente */
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+  
+  .mat-form-field-wrapper {
+    padding: 0;
+  }
+  
+  /* Mensajes de error */
+  .no-data-message {
+    text-align: left;
+    color: #646B49;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+
+  .roles-container {
+    margin-bottom: 50px;
+  }
+
+  /* Centrar los campos de entrada */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px; /* Ancho máximo */
+  }
   

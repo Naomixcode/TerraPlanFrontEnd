@@ -1,45 +1,147 @@
-:host {
-    display: flex;
-    align-items: center; /* Centra verticalmente */
-    justify-content: center; /* Centra horizontalmente */
-    height: 100vh; /* Asegura que ocupe toda la altura de la ventana */
-    background-color: #f5f5f5; /* Color de fondo opcional para el contenedor */
-  }
-  
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #fef0e7;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+}
+
+.top-bar {
+  width: 100%;
+  height: 80px;
+  background-color: #c0ff72;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo-container {
+  width: 120px;
+  height: 120px;
+  background-image: url('../../assets/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.login-container {
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 500px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.login-container:hover {
+  transform: scale(1.03);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.3);
+}
+
+.login-title {
+  font-size: 2rem;
+  color: #646b49;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+}
+
+.form-group {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.form-group input {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #fef0e7;
+  width: 80%;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: #646b49;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #7cc820;
+  box-shadow: 0 0 5px #7cc820;
+}
+
+.forgot-password {
+  font-size: 0.9rem;
+  color: #646b49;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  margin-top: -10px;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  background-color: #7cc820;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #66aa1a;
+  transform: translateY(-2px);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
   .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background-color: white; /* Color de fondo del contenedor de login */
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra sutil para un efecto 3D */
-    width: 400px; /* Ancho fijo del contenedor */
+    width: 90%;
+    padding: 2rem;
   }
-  
-  .logo {
-    background-image: url('../../assets//upc-logo.png'); /* Ruta de la imagen */
-    background-size: contain; /* Ajusta la imagen al tamaño del contenedor */
-    background-repeat: no-repeat; /* No repetir la imagen */
-    width: 120px; /* Asegura que el logo ocupe todo el ancho */
-    height: 120px; /* Altura del logo */
-    margin-bottom: 20px; /* Espacio entre el logo y el formulario */
-  }
-  
-  .form-field {
-    width: 100%;
-    margin-bottom: 16px; /* Espacio entre campos */
-  }
-  
-  .mat-red {
-    color: white !important; /* Color del texto */
-    background-color: #b63737 !important; /* Color de fondo verde */
+
+  .form-group input {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+    width: 90%;
   }
 
   .login-button {
-    border-radius: 4px; /* Bordes redondeados para el botón */
-    padding: 12px; /* Espaciado interno para el botón */
-    width: 100%; /* Ocupa todo el ancho disponible */
-    transition: background-color 0.3s; /* Efecto suave para el hover */
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
   }
+
+  .logo-container {
+    width: 50px;
+    height: 50px;
+  }
+}

@@ -1,49 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { FormsModule } from '@angular/forms';
+import { JwtRequest } from '../../models/jwtRequest';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card'; // Opcional, para el contenedor
-import Swal from 'sweetalert2'; // Importa SweetAlert2
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule,
+    MatFormFieldModule,
     FormsModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule // Opcional, para el contenedor
+    MatCardModule,
+    MatIconModule,
+    CommonModule,
   ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'], // Cambiado de styleUrl a styleUrls
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
-  errorMessage: string = '';
+  mensaje: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
-  onLogin() {
-    this.authService.login(this.username, this.password).subscribe(
-      response => {
-        if (response && response.jwttoken) {
-          this.authService.setToken(response.jwttoken);
-          this.router.navigate(['/usuarios']);
-        }
-      },
-      error => {
-        console.error('Error durante el inicio de sesión', error);
-        // Usar SweetAlert2 para mostrar un mensaje de error
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Credenciales incorrectas. Por favor, inténtalo de nuevo.',
+  ngOnInit(): void {}
+
+  login(): void {
+    let request = new JwtRequest();
+    request.username = this.username;
+    request.password = this.password;
+
+    this.loginService.login(request).subscribe(
+      (data: any) => {
+        sessionStorage.setItem('token', data.jwttoken);
+        this.router.navigate(['home']).then(() => {
+          window.location.reload();
         });
+      },
+      (error) => {
+        this.mensaje = 'Credenciales incorrectas!!!';
+        this.snackBar.open(this.mensaje, 'Aviso', { duration: 2000 });
       }
     );
   }

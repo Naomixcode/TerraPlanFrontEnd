@@ -1,0 +1,81 @@
+<div class="container">
+    <h1>{{ isEditMode ? 'Editar Comentario' : 'Registrar Comentario' }}</h1>
+    <form [formGroup]="commentForm" (ngSubmit)="saveComment()">
+      <!-- Campo ID Comentario (solo visible en edición) -->
+      <mat-form-field class="filter-field" *ngIf="isEditMode" appearance="outline">
+        <mat-label>ID de Comentario</mat-label>
+        <input matInput formControlName="idComentario" />
+      </mat-form-field>
+  
+      <!-- Campo Contenido del Comentario -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Contenido</mat-label>
+        <textarea matInput formControlName="contenidoComentario" rows="3" required></textarea>
+        <div
+          *ngIf="commentForm.get('contenidoComentario')?.invalid && commentForm.get('contenidoComentario')?.touched"
+          class="no-data-message"
+        >
+          {{ commentForm.get('contenidoComentario')?.hasError('required') ? 'El contenido es obligatorio.' : '' }}
+        </div>
+      </mat-form-field>
+  
+      <!-- Campo Fecha del Comentario -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Fecha del Comentario</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fechaComentario" required />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker touchUi="true" [startAt]="startDate"></mat-datepicker>
+        <mat-error *ngIf="commentForm.get('fechaComentario')?.invalid">
+          Seleccione una fecha válida.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Campo Usuario -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <mat-select formControlName="idUsuario" required>
+          <mat-option *ngFor="let usuario of usuariosDisponibles" [value]="usuario.idUsuario">
+            {{ usuario.nombreCompleto }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="commentForm.get('idUsuario')?.invalid">
+          Seleccione un usuario.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Campo Proyecto -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Proyecto</mat-label>
+        <mat-select formControlName="idProyecto" required>
+          <mat-option *ngFor="let proyecto of proyectosDisponibles" [value]="proyecto.idProyecto">
+            {{ proyecto.nombreProyecto }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="commentForm.get('idProyecto')?.invalid">
+          Seleccione un proyecto.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Campo Evaluación -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Evaluación</mat-label>
+        <mat-select formControlName="idEvaluacion" required>
+          <mat-option *ngFor="let evaluacion of evaluacionesDisponibles" [value]="evaluacion.idEvaluacion">
+            {{ evaluacion.resultadoEvaluacion }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="commentForm.get('idEvaluacion')?.invalid">
+          Seleccione una evaluación.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Botones -->
+      <div class="button-container">
+        <button mat-flat-button color="primary" type="submit">
+          {{ isEditMode ? 'Guardar Cambios' : 'Registrar' }}
+        </button>
+        <button mat-button type="button" (click)="navigateToComments()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+  

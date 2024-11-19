@@ -1,71 +1,139 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { Notificacion } from '../../../models/Notificacion';
-import { NotificacionService } from '../../../services/notificacion.service';
-import { User } from '../../../models/Usuario';
-import { UserService } from '../../../services/usuario.service';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { Notificacion } from '../../../models/Notificacion';
+import { Usuario } from '../../../models/Usuario';
+import { NotificacionService } from '../../../services/notificacion.service';
+import { UsuarioService } from '../../../services/usuario.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
-  selector: 'app-creaeditanotificacion',
+  selector: 'appcreaeditanotificacion',
   standalone: true,
-  providers: [provideNativeDateAdapter()],
-  imports: [MatDatepickerModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
+  imports: [
     MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    CommonModule,
     MatSelectModule,
-    MatButtonModule,],
+    MatIconModule,
+    RouterModule,
+    MatDatepickerModule
+  ],
   templateUrl: './creaeditanotificacion.component.html',
-  styleUrl: './creaeditanotificacion.component.css'
+  styleUrls: ['./creaeditanotificacion.component.css'],
 })
-export class CreaeditanotificacionComponent implements OnInit{
-  form: FormGroup = new FormGroup({});
-  listaDispositivos: User[] = [];
-  maint: Notificacion = new Notificacion();
+export class CreaEditaNotificacionComponent implements OnInit {
+  notificationForm!: FormGroup;
+  isEditMode: boolean = false;
+  idNotificacion!: number;
+  usuariosDisponibles: Usuario[] = []; // Lista de usuarios disponibles
+  startDate = new Date(); // Fecha de inicio para el DatePicker
+
   constructor(
     private formBuilder: FormBuilder,
-    private dS: UserService,
-    private mS: NotificacionService,
-    private router: Router
+    private notificacionService: NotificacionService,
+    private usuarioService: UsuarioService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute
   ) {}
-  ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      hfecha: ['', Validators.required],
-      htitulo: ['', Validators.required],
-      hmensaje: ['', Validators.required],
-      husuario: ['', Validators.required],
-    });
-    this.dS.list().subscribe((data) => {
-      this.listaDispositivos = data;
+
+  ngOnInit() {
+    this.route.params.subscribe((params: Params) => {
+      this.idNotificacion = params['id'];
+      this.isEditMode = !!this.idNotificacion;
+      this.initForm();
+      this.loadUsuarios();
+
+      if (this.isEditMode) {
+        this.loadNotificationData();
+      }
     });
   }
 
-  aceptar(): void {
-    if (this.form.valid) {
-      this.maint.fechaNotificacion = this.form.value.hfecha;
-      this.maint.tituloNotificacion = this.form.value.htitulo;
-      this.maint.mensajeNotificacion = this.form.value.hmensaje;
-      this.maint.usuario.idUsuario = this.form.value.husuario;
+  private initForm() {
+    this.notificationForm = this.formBuilder.group({
+      idNotificacion: [{ value: '', disabled: this.isEditMode }], // Deshabilitar en edición
+      tituloNotificacion: ['', [Validators.required, Validators.minLength(3)]],
+      mensajeNotificacion: ['', [Validators.required, Validators.minLength(10)]],
+      fechaNotificacion: ['', Validators.required],
+      idUsuario: ['', Validators.required], // Cambiado a ID directo
+    });
+  }
 
-      this.mS.insert(this.maint).subscribe((data) => {
-        this.mS.list().subscribe((data) => {
-          this.mS.setList(data);
-        });
+  private loadUsuarios(): void {
+    this.usuarioService.list().subscribe(
+      (usuarios) => {
+        this.usuariosDisponibles = usuarios;
+      },
+      (error) => {
+        console.error('Error al cargar usuarios:', error);
+      }
+    );
+  }
+
+  private loadNotificationData(): void {
+    this.notificacionService.getNotificacionById(this.idNotificacion).subscribe((data) => {
+      console.log('Datos recibidos del backend:', data);
+      this.notificationForm.patchValue({
+        idNotificacion: data.idNotificacion,
+        tituloNotificacion: data.tituloNotificacion,
+        mensajeNotificacion: data.mensajeNotificacion,
+        fechaNotificacion: data.fechaNotificacion,
+        idUsuario: data.idUsuario, // Usar idUsuario directamente
       });
-      this.router.navigate(['notificaciones']);
+    });
+  }
+
+  saveNotification(): void {
+    if (this.notificationForm.valid) {
+      const notificationToSave = this.notificationForm.getRawValue(); // Los valores ya están alineados con el backend
+
+      if (this.isEditMode) {
+        this.notificacionService.update(notificationToSave).subscribe(
+          () => {
+            this.snackBar.open('Notificación actualizada exitosamente', 'Cerrar', {
+              duration: 3000,
+            });
+            this.navigateToNotificaciones();
+          },
+          (error) => {
+            console.error('Error al actualizar la notificación:', error);
+            this.snackBar.open('Error al actualizar la notificación.', 'Cerrar', {
+              duration: 3000,
+            });
+          }
+        );
+      } else {
+        this.notificacionService.create(notificationToSave).subscribe(
+          () => {
+            this.snackBar.open('Notificación registrada exitosamente', 'Cerrar', {
+              duration: 3000,
+            });
+            this.navigateToNotificaciones();
+          },
+          (error) => {
+            console.error('Error al registrar la notificación:', error);
+            this.snackBar.open('Error al registrar la notificación.', 'Cerrar', {
+              duration: 3000,
+            });
+          }
+        );
+      }
+    } else {
+      this.notificationForm.markAllAsTouched();
     }
+  }
+
+  navigateToNotificaciones(): void {
+    this.router.navigate(['/notificaciones']);
   }
 }

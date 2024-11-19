@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { ListarEvaluacionComponent } from './listar-evaluacion/listar-evaluacion.component';
+import { CommonModule } from '@angular/common'; // Para directivas como *ngIf
+import { ListarEvaluacionComponent } from './listarevaluacion/listarevaluacion.component';
 
 @Component({
   selector: 'app-evaluacion',
   standalone: true,
-  imports: [RouterOutlet,ListarEvaluacionComponent],
+  imports: [RouterOutlet, CommonModule, ListarEvaluacionComponent],
   templateUrl: './evaluacion.component.html',
-  styleUrls: ['./evaluacion.component.css']
+  styleUrls: ['./evaluacion.component.css'],
 })
 export class EvaluacionComponent {
-  constructor(public route:ActivatedRoute){}
-
+  constructor(public route: ActivatedRoute) {}
 }

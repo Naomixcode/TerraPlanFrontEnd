@@ -1,0 +1,129 @@
+/* Fondo general */
+body {
+    background-color: #FEF0E7;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Contenedor general */
+  .list-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #FEF0E7;
+    min-height: 100vh;
+  }
+  
+  /* Encabezado */
+  .list-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .list-header h1 {
+    color: #646B49;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .list-header p {
+    color: #646B49;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Campo de filtro */
+  .filter-field {
+    width: 800px;
+    max-width: 1200px;
+    margin-bottom: 20px;
+    background-color: transparent;
+    border-radius: 8px;
+  }
+  
+  /* Contenedor de las tarjetas */
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas fijas */
+    gap: 20px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+  }
+  
+  /* Estilo de las tarjetas */
+  .styled-card {
+    background-color: transparent !important; /* Fondo semi-transparente */
+    border-radius: 10px !important;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2) !important;
+    transition: transform 0.3s ease-in-out !important;
+    backdrop-filter: blur(10px) !important; /* Desenfoque */
+    padding: 15px !important;
+  }
+  
+  .styled-card:hover {
+    transform: scale(1.05) !important; /* Escala al pasar el mouse */
+  }
+  
+  /* Encabezado de las tarjetas */
+  .styled-card .mat-card-title {
+    color: #003366 !important;
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+  }
+  
+  .styled-card .mat-card-subtitle {
+    color: #646B49 !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 10px !important;
+  }
+  
+  /* Contenido de las tarjetas */
+  .styled-card .mat-card-content p {
+    color: #646B49 !important;
+    font-size: 0.9rem !important;
+    margin: 5px 0 !important;
+  }
+  
+  /* Botones de acción en tarjetas */
+  .styled-card .mat-card-actions {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 10px !important;
+  }
+  
+  button {
+    cursor: pointer;
+    font-size: 0.8rem !important;
+  }
+  
+  button mat-icon {
+    vertical-align: middle !important;
+  }
+  
+  button[color="warn"] {
+    color: red !important;
+  }
+  
+  button[color="primary"] {
+    color: #4CAF50 !important;
+  }
+  
+  /* Mensaje de "No hay coincidencias" */
+  .no-data-message {
+    text-align: center;
+    color: #646B49;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  /* Paginador */
+  mat-paginator {
+    color: #646B49;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-radius: 10px;
+  }
+  

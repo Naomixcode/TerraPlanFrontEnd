@@ -1,44 +1,105 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 import { Material } from '../../../models/Material';
 import { MaterialService } from '../../../services/material.service';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-listarmaterial',
   standalone: true,
-  imports: [MatTableModule, MatIconModule,RouterModule, MatPaginatorModule, CommonModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    RouterModule,
+  ],
   templateUrl: './listarmaterial.component.html',
-  styleUrl: './listarmaterial.component.css',
+  styleUrls: ['./listarmaterial.component.css'],
 })
-export class ListarmaterialComponent implements OnInit {
-  dataSource: MatTableDataSource<Material> = new MatTableDataSource();
-  displayedColumns: string[] = ['c1', 'c2', 'c3', 'c4', 'accion01','accion02'];
-  cantidadRegistros: number=0;
+export class ListarMaterialComponent implements OnInit {
+  materialDataSource: MatTableDataSource<Material> = new MatTableDataSource();
+  paginatedMaterials: Material[] = []; // Materiales visibles en la página actual
+  pageSize = 5; // Tamaño de página inicial
+  currentPage = 0; // Página actual
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  constructor(private materialService: MaterialService) {}
 
-  constructor(private dS: MaterialService) {}
-  
   ngOnInit(): void {
-    this.dS.list().subscribe((data) => {
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.cantidadRegistros = data.length;
+    this.loadMaterials();
+  }
+
+  // Carga la lista de Materiales
+  loadMaterials(): void {
+    this.materialService.list().subscribe((data) => {
+      this.materialDataSource.data = data;
+      this.updatePaginatedMaterials();
     });
   }
 
-  eliminar(id: number) {
-    this.dS.delete(id).subscribe((data) => {
-      this.dS.list().subscribe((data) => {
-        this.dS.setList(data);
-      });
+  // Actualiza la lista de Materiales según la página actual
+  updatePaginatedMaterials(): void {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedMaterials = this.materialDataSource.filteredData.slice(
+      startIndex,
+      endIndex
+    );
+  }
+
+  // Filtro para Materiales
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.materialDataSource.filter = filterValue.trim().toLowerCase();
+    this.currentPage = 0; // Reiniciar a la primera página después de filtrar
+    this.updatePaginatedMaterials();
+  }
+
+  // Devuelve la clase CSS según el tipo de material
+  getCardClass(tipoMaterial: string): string {
+    const classMap: { [key: string]: string } = {
+      'Suelos adecuados': 'material-suelos-adecuados',
+      'Suelos tolerables': 'material-suelos-tolerables',
+      Arena: 'material-arena',
+      Grava: 'material-grava',
+      'Piedra triturada': 'material-piedra-triturada',
+      Arcilla: 'material-arcilla',
+      Limo: 'material-limo',
+      Geotextiles: 'material-geotextiles',
+      Geomallas: 'material-geomallas',
+      'Escorias de alto horno': 'material-escorias',
+      'Cenizas volantes': 'material-cenizas',
+      'Residuos de construcción y demolición reciclados': 'material-residuos',
+      'Áridos ligeros de arcilla expandida': 'material-aridos',
+      'Poliestireno expandido (EPS)': 'material-eps',
+      'Tierra cementada': 'material-tierra-cementada',
+    };
+
+    return classMap[tipoMaterial] || 'material-default';
+  }
+
+  // Maneja el cambio de página
+  onPageChange(event: any): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updatePaginatedMaterials();
+  }
+
+  // Elimina un Material por ID
+  deleteMaterial(idMaterial: number): void {
+    this.materialService.delete(idMaterial).subscribe(() => {
+      this.loadMaterials(); // Refresca la lista después de eliminar
     });
   }
 }
