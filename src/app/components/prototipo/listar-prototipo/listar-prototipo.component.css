@@ -1,65 +1,129 @@
-.container {
-    padding: 20px; /* Espacio alrededor del contenedor */
-}
-
-.header {
-    text-align: center; /* Centrar el texto del encabezado */
-    margin-bottom: 20px; /* Aumentar el espacio debajo del encabezado */
-}
-
-.mat-form-field {
-    width: 100%; /* Ancho completo para el campo de formulario */
-    margin-bottom: 20px; /* Espacio debajo del campo de filtro */
-}
-
-table {
-    width: 100%;
-}
-
-.action-cell {
-    text-align: center; /* Centrar los íconos en las celdas */
-}
-
-.mat-mdc-form-field {
-    font-size: 14px;
-    width: 100%;
-}
-
-td, th {
-    width: 20%; /* Ancho de las columnas */
-}
-
-/* Ajustes para los botones de íconos */
-button.mat-icon-button {
-    padding: 0; /* Sin padding para botones de íconos */
-    margin: 0 10px; /* Espacio lateral entre íconos */
-    border: none; /* Quitar el borde */
-    background: none; /* Quitar el fondo */
-}
-
-/* Efecto al pasar el mouse sobre los íconos */
-button.mat-icon-button:hover {
-    background: none; /* Asegurarse de que no haya fondo al pasar el mouse */
-}
-
-/* Mejora de estilo para íconos */
-.mat-icon {
-    font-size: 20px; /* Tamaño de los íconos */
-    color: #6200ea; /* Color de los íconos */
-    transition: color 0.3s; /* Transición suave para el color */
-}
-
-/* Efecto al pasar el mouse sobre los íconos */
-.mat-icon-button:hover .mat-icon {
-    color: #3700b3; /* Cambiar color al pasar el mouse */
-}
-
-/* Títulos de la tabla */
-h1 {
-    font-size: 24px; /* Reducir el tamaño del título de la tabla */
-}
-
-/* Espacio adicional entre el navbar y el título de la tabla */
-.header {
-    margin-top: 30px; /* Aumentar el espacio entre el navbar y el título de la tabla */
-}
+/* Fondo general */
+body {
+    background-color: #FEF0E7;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Contenedor general */
+  .list-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #FEF0E7;
+    min-height: 100vh;
+  }
+  
+  /* Encabezado */
+  .list-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .list-header h1 {
+    color: #646B49;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .list-header p {
+    color: #646B49;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Campo de filtro */
+  .filter-field {
+    width: 800px;
+    max-width: 1200px;
+    margin-bottom: 20px;
+    background-color: transparent;
+    border-radius: 8px;
+  }
+  
+  /* Contenedor de las tarjetas */
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas fijas */
+    gap: 20px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+  }
+  
+  /* Estilo de las tarjetas */
+  .styled-card {
+    background-color: transparent !important; /* Fondo semi-transparente */
+    border-radius: 10px !important;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2) !important;
+    transition: transform 0.3s ease-in-out !important;
+    backdrop-filter: blur(10px) !important; /* Desenfoque */
+    padding: 15px !important;
+  }
+  
+  .styled-card:hover {
+    transform: scale(1.05) !important; /* Escala al pasar el mouse */
+  }
+  
+  /* Encabezado de las tarjetas */
+  .styled-card .mat-card-title {
+    color: #003366 !important;
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+  }
+  
+  .styled-card .mat-card-subtitle {
+    color: #646B49 !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 10px !important;
+  }
+  
+  /* Contenido de las tarjetas */
+  .styled-card .mat-card-content p {
+    color: #646B49 !important;
+    font-size: 0.9rem !important;
+    margin: 5px 0 !important;
+  }
+  
+  /* Botones de acción en tarjetas */
+  .styled-card .mat-card-actions {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 10px !important;
+  }
+  
+  button {
+    cursor: pointer;
+    font-size: 0.8rem !important;
+  }
+  
+  button mat-icon {
+    vertical-align: middle !important;
+  }
+  
+  button[color="warn"] {
+    color: red !important;
+  }
+  
+  button[color="primary"] {
+    color: #4CAF50 !important;
+  }
+  
+  /* Mensaje de "No hay coincidencias" */
+  .no-data-message {
+    text-align: center;
+    color: #646B49;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  /* Paginador */
+  mat-paginator {
+    color: #646B49;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-radius: 10px;
+  }
+  

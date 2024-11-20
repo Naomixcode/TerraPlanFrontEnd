@@ -1,73 +1,55 @@
-<div class="container">
-    <div class="header">
-        <h1>Lista de Prototipos</h1>
+<div class="list-wrapper">
+    <div class="list-header">
+      <h1>Lista de Prototipos</h1>
+      <p>Cantidad de registros: {{ prototipoDataSource.data.length }}</p>
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Filtrar por Tipo de Prototipo</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar" />
+      </mat-form-field>
     </div>
-
-    <mat-form-field>
-        <mat-label>Filtrar</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Prototipo abc" #input>
-    </mat-form-field>
-
-    <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="dataSource" matSort>
-
-            <!-- Id Proyecto Column -->
-            <ng-container matColumnDef="c1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Prototipo</th>
-                <td mat-cell *matCellDef="let element">{{element.idPrototipo}}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="c2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Creación</th>
-                <td mat-cell *matCellDef="let element">{{element.fechaCreacionPrototipo | date}}</td>
-            </ng-container>
-            <!-- Nombre Proyecto Column -->
-            <ng-container matColumnDef="c3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion del Protitpo</th>
-                <td mat-cell *matCellDef="let element">{{element.descripcionPrototipo}}</td>
-            </ng-container>
-
-            <!-- Descripción Proyecto Column -->
-            <ng-container matColumnDef="c4">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Estructura</th>
-                <td mat-cell *matCellDef="let element">{{element.tipoEstructuraPrototipo}}</td>
-            </ng-container>
-
-
-            <ng-container matColumnDef="c5">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Plano</th>
-                <td mat-cell *matCellDef="let element">{{element.plano.descripcionPlano}}</td>
-            </ng-container>
-
-            <!-- Edit Column -->
-            <ng-container matColumnDef="edit">
-                <th mat-header-cell *matHeaderCellDef>Editar</th>
-                <td mat-cell *matCellDef="let element" class="action-cell">
-                    <button mat-icon-button (click)="editPrototipo(element)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
-
-            <!-- Delete Column -->
-            <ng-container matColumnDef="delete">
-                <th mat-header-cell *matHeaderCellDef>Eliminar</th>
-                <td mat-cell *matCellDef="let element" class="action-cell">
-                    <button mat-icon-button (click)="deletePrototipo(element.idPrototipo)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-            <!-- Row shown when there is no matching data. -->
-            <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="10">No hay datos que coincidan con el filtro "{{input.value}}"</td>
-            </tr>
-        </table>
-
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de proyectos"></mat-paginator>
+  
+    <div class="card-container">
+      <mat-card
+        *ngFor="let prototipo of paginatedPrototipos"
+        class="styled-card"
+        appearance="outlined"
+      >
+        <mat-card-header>
+          <mat-card-title>Prototipo ID: {{ prototipo.idPrototipo }}</mat-card-title>
+          <mat-card-subtitle>{{ prototipo.fechaCreacionPrototipo | date }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Tipo:</strong> {{ prototipo.tipoEstructuraPrototipo }}</p>
+          <p><strong>Descripción:</strong> {{ prototipo.descripcionPrototipo }}</p>
+          <p><strong>Plano:</strong> {{ prototipo.descripcionPlano }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button color="warn" (click)="deletePrototipo(prototipo.idPrototipo)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            [routerLink]="['/prototipos/editar', prototipo.idPrototipo]"
+          >
+            <mat-icon>edit</mat-icon> Editar
+          </button>
+        </mat-card-actions>
+      </mat-card>
     </div>
-</div>
+  
+    <!-- Mensaje de "No hay coincidencias" -->
+    <div *ngIf="prototipoDataSource.filteredData.length === 0" class="no-data-message">
+      No hay coincidencias.
+    </div>
+  
+    <!-- Paginador -->
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      [length]="prototipoDataSource.filteredData.length"
+      [pageSize]="pageSize"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
+  </div>
+  

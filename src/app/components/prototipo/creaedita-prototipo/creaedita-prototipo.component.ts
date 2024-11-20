@@ -1,154 +1,138 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router'; 
-import { MatFormFieldModule } from '@angular/material/form-field'; 
-import { MatSelectModule } from '@angular/material/select'; 
-import { MatButtonModule } from '@angular/material/button'; 
-import { ReactiveFormsModule } from '@angular/forms'; 
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import Swal from 'sweetalert2'; 
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Plano } from '../../../models/Plano';
+import { Prototipo } from '../../../models/Prototipo';
 import { PrototipoService } from '../../../services/prototipo.service';
 import { PlanoService } from '../../../services/plano.service';
-import { Prototipo } from '../../../models/Prototipo';
-import { Terreno } from '../../../models/Terreno';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatOptionModule } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-creaedita-prototipo',
+  selector: 'app-creaeditaprototipo',
   standalone: true,
   imports: [
-    ReactiveFormsModule, MatInputModule, CommonModule, MatFormFieldModule, 
-    MatSelectModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule,
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatOptionModule,
   ],
-  templateUrl: './creaedita-prototipo.component.html',
-  styleUrl: './creaedita-prototipo.component.css'
+  templateUrl: './creaeditaprototipo.component.html',
+  styleUrls: ['./creaeditaprototipo.component.css'],
 })
-export class CreaeditaPrototipoComponent implements OnInit {
-  form:  FormGroup;
-  planos: Plano[]=[];
-  isEditMode = false;
-  prototipoId: number | null = null;
+export class CreaEditaPrototipoComponent implements OnInit {
+  prototipoForm!: FormGroup;
+  isEditMode: boolean = false;
+  idPrototipo!: number;
+  planosDisponibles: Plano[] = [];
+  startDate = new Date();
+
   constructor(
-
-    private fb: FormBuilder, 
-    private planoService:PlanoService,
+    private formBuilder: FormBuilder,
     private prototipoService: PrototipoService,
+    private planoService: PlanoService,
     private router: Router,
+    private snackBar: MatSnackBar,
     private route: ActivatedRoute
-  ){
-    this.form=fb.group({
-      idPrototipo: [{value:'',disabled:true}],
-      fechaCreacionPrototipo: [null, Validators.required],
-      tipoEstructuraPrototipo: [null, Validators.required],
-      descripcionPrototipo: [null, Validators.required],
-      plano: [null, Validators.required],
-    });
+  ) {}
 
+  ngOnInit(): void {
+    this.route.params.subscribe((params: Params) => {
+      this.idPrototipo = params['id'];
+      this.isEditMode = !!this.idPrototipo;
+      this.initForm();
+      this.loadPlanos();
+
+      if (this.isEditMode) {
+        this.loadPrototipoData();
+      }
+    });
   }
-  ngOnInit()
-  {
-    this.loadPlanos();
-    this.checkEditMode();
+
+  private initForm(): void {
+    this.prototipoForm = this.formBuilder.group({
+      idPrototipo: [{ value: '', disabled: this.isEditMode }],
+      tipoEstructuraPrototipo: ['', Validators.required],
+      descripcionPrototipo: ['', Validators.required],
+      fechaCreacionPrototipo: ['', Validators.required],
+      idPlano: ['', Validators.required],
+    });
   }
-  loadPlanos(){
+
+  private loadPlanos(): void {
     this.planoService.list().subscribe(
-      (data: Plano[])=>{
-        this.planos=data;
+      (planos) => {
+        this.planosDisponibles = planos;
       },
-      (error)=>{
-        console.error('Error al cargar planos',error);
+      (error) => {
+        console.error('Error al cargar planos:', error);
       }
     );
   }
-  checkEditMode(){
-    this.route.paramMap.subscribe(params=>{
-      const prototipoId=params.get('id');
-      if(prototipoId){
-        this.isEditMode=true;
-        this.prototipoId=+prototipoId;
-        this.loadPrototipoData(this.prototipoId); // Load evaluacion data when editing
-      }
+
+  private loadPrototipoData(): void {
+    this.prototipoService.getPrototipoById(this.idPrototipo).subscribe((data) => {
+      this.prototipoForm.patchValue({
+        idPrototipo: data.idPrototipo,
+        tipoEstructuraPrototipo: data.tipoEstructuraPrototipo,
+        descripcionPrototipo: data.descripcionPrototipo,
+        fechaCreacionPrototipo: data.fechaCreacionPrototipo,
+        idPlano: data.idPlano,
+      });
     });
   }
-  loadPrototipoData(id: number){
-    this.prototipoService.getById(id).subscribe(
-      (prototipo:Prototipo)=>{
-        this.form.patchValue({
-          idPrototipo: prototipo.idPrototipo,
-          fechaCreacionPrototipo: prototipo.fechaCreacionPrototipo,
-          tipoEstructuraPrototipo: prototipo.tipoEstructuraPrototipo,
-          descripcionPrototipo: prototipo.descripcionPrototipo,
-          plano: prototipo.plano ? prototipo.plano: null
-        });
+
+  savePrototipo(): void {
+    if (this.prototipoForm.valid) {
+      const prototipoToSave = this.prototipoForm.getRawValue();
+
+      if (this.isEditMode) {
+        this.prototipoService.update(prototipoToSave).subscribe(
+          () => {
+            this.snackBar.open('Prototipo actualizado exitosamente', 'Cerrar', { duration: 3000 });
+            this.navigateToPrototipos();
+          },
+          (error) => {
+            console.error('Error al actualizar el prototipo:', error);
+            this.snackBar.open('Error al actualizar el prototipo.', 'Cerrar', { duration: 3000 });
+          }
+        );
+      } else {
+        this.prototipoService.create(prototipoToSave).subscribe(
+          () => {
+            this.snackBar.open('Prototipo registrado exitosamente', 'Cerrar', { duration: 3000 });
+            this.navigateToPrototipos();
+          },
+          (error) => {
+            console.error('Error al registrar el prototipo:', error);
+            this.snackBar.open('Error al registrar el prototipo.', 'Cerrar', { duration: 3000 });
+          }
+        );
       }
-    );
-  }
-
-  onSubmit(){
-    if(this.form.valid){
-      const planoSeleccionado = this.planos.find(plano => plano.idPlano === this.form.value.plano);
-
-      // Si no se encuentra el plano, creamos uno nuevo con un terreno vacío
-      const plano = planoSeleccionado || new Plano(0, "", "", "", new Terreno());
-  
-      const prototipoData= new Prototipo(
-        this.prototipoId ?? 0,
-        this.form.getRawValue().fechaCreacionPrototipo,
-        this.form.getRawValue().tipoEstructuraPrototipo,
-        this.form.getRawValue().descripcionPrototipo,
-        plano
-      )
-      if(this.isEditMode){
-        this.prototipoService.update(prototipoData).subscribe( ()=>{
-            Swal.fire(
-              {
-                icon:'success',
-                title: 'Prototipo Actualizado',
-                text: `Prototipo ${this.form.value.tipoEstructuraPrototipo} actualizado exitosamente `,
-              } ).then(() => {
-                 this.router.navigate(['/prototipos']);
-              });
-          },
-          (error)=>{
-            console.error('Error al actualizar prototipo',error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No se pudo prototipo la evaluación. Inténtalo de nuevo.',
-            });
-          });
-       }else{
-        this.prototipoService.create(prototipoData).subscribe(()=>{
-            Swal.fire(
-              {
-                icon:'success',
-                title: 'Prototipo Creado',
-                text: `Prototipo ${this.form.value.tipoEstructuraPrototipo} creado exitosamente`,
-              } ).then(() => {
-                 this.router.navigate(['/prototipos']);
-              });
-          },
-          (error)=>{
-            console.error('Error al crear evaluación',error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No se pudo crear el prototipo. Inténtalo de nuevo.',
-            });
-          });
- 
-       }
-    }else{
-      Swal.fire({
-        icon: 'warning',
-        title: 'Advertencia',
-        text: 'Por favor, completa todos los campos requeridos.',
-      });
+    } else {
+      this.prototipoForm.markAllAsTouched();
     }
   }
 
+  navigateToPrototipos(): void {
+    this.router.navigate(['/prototipos']);
+  }
 }
-

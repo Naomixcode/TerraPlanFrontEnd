@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { ListarPrototipoComponent } from './listar-prototipo/listar-prototipo.component';
+import { CommonModule } from '@angular/common'; // Para directivas como *ngIf
+import { ListarPrototipoComponent } from './listarprototipo/listarprototipo.component';
 
 @Component({
   selector: 'app-prototipo',
   standalone: true,
-  imports: [RouterOutlet, ListarPrototipoComponent],
+  imports: [RouterOutlet, CommonModule, ListarPrototipoComponent],
   templateUrl: './prototipo.component.html',
-  styleUrls: ['./prototipo.component.css']
+  styleUrls: ['./prototipo.component.css'],
 })
 export class PrototipoComponent {
-  constructor(public route:ActivatedRoute){}
+  constructor(public route: ActivatedRoute) {}
 }

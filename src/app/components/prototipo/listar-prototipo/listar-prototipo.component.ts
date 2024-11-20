@@ -1,95 +1,84 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Router, RouterModule } from '@angular/router';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 import { Prototipo } from '../../../models/Prototipo';
 import { PrototipoService } from '../../../services/prototipo.service';
-import Swal from 'sweetalert2';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-listar-evaluacion',
+  selector: 'app-listarprototipo',
   standalone: true,
   imports: [
-    MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatInputModule,
-    MatFormFieldModule,
     CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
     RouterModule,
   ],
-  templateUrl: './listar-prototipo.component.html',
-  styleUrls: ['./listar-prototipo.component.css']
+  templateUrl: './listarprototipo.component.html',
+  styleUrls: ['./listarprototipo.component.css'],
 })
-
 export class ListarPrototipoComponent implements OnInit {
-  dataSource: MatTableDataSource<Prototipo> = new MatTableDataSource();
-  displayedColumns: string[] = ['c1', 'c2', 'c3', 'c4', 'c5', 'edit', 'delete'];
+  prototipoDataSource: MatTableDataSource<Prototipo> = new MatTableDataSource();
+  paginatedPrototipos: Prototipo[] = []; // Prototipos visibles en la página actual
+  pageSize = 5; // Tamaño de página inicial
+  currentPage = 0; // Página actual
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) prototipoPaginator!: MatPaginator;
 
-  constructor(
-    private prototipoService: PrototipoService,
-    private router: Router
-  ) {}
+  constructor(private prototipoService: PrototipoService) {}
 
   ngOnInit(): void {
+    this.loadPrototipos();
+  }
+
+  // Carga la lista de prototipos
+  loadPrototipos(): void {
     this.prototipoService.list().subscribe((data) => {
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }, error => {
-      console.error('Error fetching evaluaciones:', error);
+      this.prototipoDataSource.data = data;
+      this.updatePaginatedPrototipos();
     });
   }
 
-  applyFilter(event: Event) {
+  // Actualiza la lista de prototipos según la página actual
+  updatePaginatedPrototipos(): void {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedPrototipos = this.prototipoDataSource.filteredData.slice(
+      startIndex,
+      endIndex
+    );
+  }
+
+  // Filtro para los prototipos
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.prototipoDataSource.filter = filterValue.trim().toLowerCase();
+    this.currentPage = 0; // Reiniciar a la primera página después de filtrar
+    this.updatePaginatedPrototipos();
   }
 
-  editPrototipo(prototipo: Prototipo): void {
-    this.router.navigate(['/prototipos/editar', prototipo.idPrototipo]);
+  // Maneja el cambio de página
+  onPageChange(event: any): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updatePaginatedPrototipos();
   }
 
-  deletePrototipo(prototipoId: number): void {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: "No podrás revertir esto!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminar!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.prototipoService.delete(prototipoId).subscribe({
-          next: () => {
-            Swal.fire(
-              'Eliminado!',
-              'El prototipo ha sido eliminada.',
-              'success'
-            );
-            this.dataSource.data = this.dataSource.data.filter(prototipo =>
-              prototipo.idPrototipo !== prototipoId
-            ); // Recarga la lista después de eliminar una evaluación
-          },
-          error: (err) => {
-            Swal.fire(
-              'Error',
-              'Hubo un problema al eliminar el prototipo. Inténtalo de nuevo más tarde.',
-              'error'
-            );
-          }
-        });
-      }
+  // Elimina un prototipo por ID
+  deletePrototipo(idPrototipo: number): void {
+    this.prototipoService.delete(idPrototipo).subscribe(() => {
+      this.loadPrototipos(); // Refresca la lista después de eliminar
     });
   }
 }
