@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { ListarpermisoComponent } from './listarpermiso/listarpermiso.component';
+import { CommonModule } from '@angular/common'; // Para directivas como *ngIf
+import { ListarPermisoComponent } from './listarpermiso/listarpermiso.component';
 
 @Component({
-  selector: 'app-permiso',
+  selector: 'app-proyecto',
   standalone: true,
-  imports: [ListarpermisoComponent, RouterOutlet],
+  imports: [RouterOutlet, CommonModule, ListarPermisoComponent],
   templateUrl: './permiso.component.html',
-  styleUrl: './permiso.component.css'
+  styleUrls: ['./permiso.component.css'],
 })
 export class PermisoComponent {
   constructor(public route: ActivatedRoute) {}
 }
-
-

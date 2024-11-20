@@ -1,43 +1,66 @@
-<div class="container" style="text-align: center;margin:5%">
-    <div><h1>Registro de Permisos</h1></div>
-    <div>
-      <form class="example-form" [formGroup]="form" (submit)="aceptar()">
-        
-        <mat-form-field>
-            <mat-label>Fecha de subida</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="hfecha">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-<br>
-        <mat-form-field class="example-full-width">
-          <mat-label>Nombre</mat-label>
-          <input matInput formControlName="hnombre" />
-        </mat-form-field>
+<div class="container">
+  <h1>{{ isEditMode ? 'Editar Permiso' : 'Registrar Permiso' }}</h1>
+  <form [formGroup]="permissionForm" (ngSubmit)="savePermission()">
+    <!-- Campo ID Permiso (solo visible en edición) -->
+    <mat-form-field class="filter-field" *ngIf="isEditMode" appearance="outline">
+      <mat-label>ID de Permiso</mat-label>
+      <input matInput formControlName="idPermiso" />
+    </mat-form-field>
 
-<br/>    
-  
-        <mat-form-field class="example-full-width">
-          <mat-label>Descripción</mat-label>
-          <textarea matInput placeholder="Limpieza" formControlName="hdescripcion" ></textarea>
-        </mat-form-field>
-<br/>
-    
-        <mat-form-field>
-          <mat-label>Proyecto</mat-label>
-          <mat-select  formControlName="hproyecto">
-            @for (m of listaDispositivos; track m) {
-            <mat-option [value]="m.idProyecto">{{ m.nombreProyecto }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <br>        
-  
-        <div>
-          <button mat-flat-button class="custom-button">Aceptar</button>
-        </div>
-      </form>
+    <!-- Campo Nombre Permiso -->
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombrePermiso" required />
+      <div
+        *ngIf="permissionForm.get('nombrePermiso')?.invalid && permissionForm.get('nombrePermiso')?.touched"
+        class="no-data-message"
+      >
+        {{ permissionForm.get('nombrePermiso')?.hasError('required') ? 'El nombre es obligatorio.' : '' }}
+      </div>
+    </mat-form-field>
+
+    <!-- Campo Descripción Permiso -->
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcionPermiso" rows="3" required></textarea>
+      <div
+        *ngIf="permissionForm.get('descripcionPermiso')?.invalid && permissionForm.get('descripcionPermiso')?.touched"
+        class="no-data-message"
+      >
+        {{ permissionForm.get('descripcionPermiso')?.hasError('required') ? 'La descripción es obligatoria.' : '' }}
+      </div>
+    </mat-form-field>
+
+    <!-- Campo Fecha Subida -->
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Fecha de Subida</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fechaSubida" required />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker touchUi="true" [startAt]="startDate"></mat-datepicker>
+      <mat-error *ngIf="permissionForm.get('fechaSubida')?.invalid">
+        Seleccione una fecha válida.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Campo Proyecto -->
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Proyecto</mat-label>
+      <mat-select formControlName="idProyecto" required>
+        <mat-option *ngFor="let proyecto of proyectosDisponibles" [value]="proyecto.idProyecto">
+          {{ proyecto.nombreProyecto }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="permissionForm.get('idProyecto')?.invalid">
+        Seleccione un proyecto.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Botones -->
+    <div class="button-container">
+      <button mat-flat-button color="primary" type="submit">
+        {{ isEditMode ? 'Guardar Cambios' : 'Registrar' }}
+      </button>
+      <button mat-button type="button" (click)="navigateToPermissions()">Cancelar</button>
     </div>
-  </div>
-  
+  </form>
+</div>
