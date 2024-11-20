@@ -1,0 +1,19 @@
+<div>
+    <h1>Terrenos por Proyecto</h1>
+  </div>
+  
+  <div class="chart-container" *ngIf="chartData.length > 0">
+    <!-- Gráfico de líneas -->
+    <canvas
+      baseChart
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [options]="chartOptions"
+      [legend]="chartLegend"
+      [type]="chartType"
+    ></canvas>
+  </div>
+  <div *ngIf="chartData.length === 0">
+    <p style="text-align: center; color: #646b49;">No hay datos para mostrar.</p>
+  </div>
+  

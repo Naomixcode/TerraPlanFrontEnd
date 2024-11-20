@@ -1,0 +1,58 @@
+<div class="container">
+    <h1>{{ isEditMode ? 'Editar Terreno' : 'Registrar Terreno' }}</h1>
+    <form [formGroup]="terrenoForm" (ngSubmit)="saveTerreno()">
+        <!-- Campo ID Terreno (solo visible en edición) -->
+        <mat-form-field class="filter-field" *ngIf="isEditMode" appearance="outline">
+            <mat-label>ID de Terreno</mat-label>
+            <input matInput formControlName="idTerreno" />
+        </mat-form-field>
+
+        <!-- Campo Ubicación del Terreno -->
+        <mat-form-field class="filter-field" appearance="outline">
+            <mat-label>Ubicación</mat-label>
+            <input matInput formControlName="ubicacionTerreno" required />
+            <mat-error *ngIf="terrenoForm.get('ubicacionTerreno')?.invalid">
+                La ubicación es obligatoria.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Campo Tamaño del Terreno -->
+        <mat-form-field class="filter-field" appearance="outline">
+            <mat-label>Tamaño (m²)</mat-label>
+            <input matInput type="number" formControlName="tamanioTerreno" required />
+            <mat-error *ngIf="terrenoForm.get('tamanioTerreno')?.invalid">
+                El tamaño es obligatorio y debe ser válido.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Campo Descripción del Terreno -->
+        <mat-form-field class="filter-field" appearance="outline">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="descripcionTerreno" rows="3" required></textarea>
+            <mat-error *ngIf="terrenoForm.get('descripcionTerreno')?.invalid">
+                La descripción es obligatoria.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Campo Proyecto -->
+        <mat-form-field class="filter-field" appearance="outline">
+            <mat-label>Proyecto</mat-label>
+            <mat-select formControlName="idProyecto" required>
+                <mat-option *ngFor="let proyecto of proyectosDisponibles" [value]="proyecto.idProyecto">
+                    {{ proyecto.nombreProyecto }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="terrenoForm.get('idProyecto')?.invalid">
+                Seleccione un proyecto.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Botones -->
+        <div class="button-container">
+            <button mat-flat-button color="primary" type="submit">
+                {{ isEditMode ? 'Guardar Cambios' : 'Registrar' }}
+            </button>
+            <button mat-button type="button" (click)="navigateToTerrenos()">Cancelar</button>
+        </div>
+    </form>
+</div>

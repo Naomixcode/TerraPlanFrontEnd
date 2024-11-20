@@ -1,0 +1,22 @@
+<div>
+    <h1>Proyectos por Estado</h1>
+  </div>
+  
+  <div class="chart-container" *ngIf="chartData.length > 0">
+    <!-- Gráfico de barras -->
+    <canvas
+      baseChart
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [options]="chartOptions"
+      [legend]="chartLegend"
+      [type]="chartType"
+    ></canvas>
+  </div>
+  
+  <div *ngIf="chartData.length === 0">
+    <p style="text-align: center; color: #646b49;">
+      No hay datos disponibles para los estados de los proyectos
+    </p>
+  </div>
+  

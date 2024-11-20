@@ -1,0 +1,96 @@
+/* Fondo general */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background-color: #FEF0E7 !important; /* Fondo general */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden; /* Evitar scroll no deseado */
+  }
+  
+  /* Contenedor principal */
+  :host {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #FEF0E7 !important;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Encabezado */
+  h1 {
+    color: #646B49;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Campo de selección centrado */
+  mat-form-field {
+    width: 100%;
+    max-width: 500px; /* Limitar el ancho máximo */
+    margin: 10px auto; /* Centrar horizontalmente */
+    background-color: transparent !important;
+    border-radius: 8px;
+  }
+  
+  .mat-form-field {
+    width: 100%;
+    max-width: 800px;
+    background-color: transparent; /* Fondo transparente */
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+  
+  .mat-form-field-wrapper {
+    padding: 0 !important;
+  }
+  
+  /* Opciones del campo */
+  .mat-select {
+    color: #646B49;
+    font-weight: bold;
+    border: none !important;
+    background-color: transparent !important;
+  }
+  
+  mat-option {
+    color: #646B49;
+    font-size: 1rem;
+  }
+  
+  /* Contenedor del gráfico */
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ajustar ancho para ocupar mejor el espacio */
+    max-width: 1200px; /* Limitar el tamaño máximo */
+    margin: 10px auto;
+    padding: 10px;
+  }
+  
+  canvas {
+    width: 100%; /* Usar el ancho completo del contenedor */
+    height: auto; /* Mantener proporción del gráfico */
+    background-color: transparent !important;
+  }
+  
+  /* Mensaje de datos vacíos */
+  .no-data-message {
+    text-align: center;
+    color: #646B49;
+    font-size: 1rem;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  

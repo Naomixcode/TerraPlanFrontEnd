@@ -1,0 +1,47 @@
+<div class="list-wrapper">
+    <div class="list-header">
+      <h1>Lista de Roles</h1>
+      <p>Cantidad de registros: {{ roleDataSource.data.length }}</p>
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Filtrar por Nombre</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar" />
+      </mat-form-field>
+    </div>
+  
+    <div class="card-container">
+      <mat-card
+        *ngFor="let role of paginatedRoles"
+        class="styled-card"
+        appearance="outlined"
+      >
+        <mat-card-header>
+          <mat-card-title>Rol ID: {{ role.idRol }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Nombre:</strong> {{ role.nombreRol }}</p>
+          <p><strong>Descripción:</strong> {{ role.descripcionRol }}</p>
+          <p><strong>Usuario:</strong> {{ role.nombreUsuario }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button color="warn" (click)="deleteRole(role.idRol)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  
+    <!-- Mensaje de "No hay coincidencias" -->
+    <div *ngIf="roleDataSource.filteredData.length === 0" class="no-data-message">
+      No hay coincidencias.
+    </div>
+  
+    <!-- Paginador -->
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      [length]="roleDataSource.filteredData.length"
+      [pageSize]="pageSize"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
+  </div>
+  

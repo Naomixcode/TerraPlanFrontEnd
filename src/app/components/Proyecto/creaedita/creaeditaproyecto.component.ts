@@ -1,142 +1,141 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { User } from '../../../models/Usuario'; 
-import { Proyecto } from '../../../models/Proyecto';
-import { UserService } from '../../../services/usuario.service'; 
-import { ProyectoService } from '../../../services/proyecto.service'; 
-import { Router, ActivatedRoute } from '@angular/router'; 
-import { MatFormFieldModule } from '@angular/material/form-field'; 
-import { MatSelectModule } from '@angular/material/select'; 
-import { MatButtonModule } from '@angular/material/button'; 
-import { ReactiveFormsModule } from '@angular/forms'; 
 import { MatInputModule } from '@angular/material/input';
-import Swal from 'sweetalert2'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { Proyecto } from '../../../models/Proyecto';
+import { Usuario } from '../../../models/Usuario';
+import { ProyectoService } from '../../../services/proyecto.service';
+import { UsuarioService } from '../../../services/usuario.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-creaeditaproyecto',
+  standalone: true,
+  imports: [
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    CommonModule,
+    MatSelectModule,
+    MatIconModule,
+    RouterModule,
+    MatDatepickerModule,
+  ],
   templateUrl: './creaeditaproyecto.component.html',
   styleUrls: ['./creaeditaproyecto.component.css'],
-  standalone: true,
-  imports: [ReactiveFormsModule, MatInputModule, CommonModule, MatFormFieldModule, MatSelectModule, MatButtonModule]
 })
-export class CrearProyectoComponent implements OnInit {
-  form: FormGroup;
-  users: User[] = [];
-  isEditMode = false;
-  projectId: number | null = null;
+export class CreaEditaProyectoComponent implements OnInit {
+  projectForm!: FormGroup;
+  isEditMode: boolean = false;
+  idProyecto!: number;
+  usuariosDisponibles: Usuario[] = [];
+  estadosDisponibles: string[] = ['Activo', 'Inactivo', 'Completado'];
+  startDate = new Date();
 
   constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
+    private formBuilder: FormBuilder,
     private proyectoService: ProyectoService,
+    private usuarioService: UsuarioService,
     private router: Router,
+    private snackBar: MatSnackBar,
     private route: ActivatedRoute
-  ) {
-    this.form = this.fb.group({
-      idProyecto: [{ value: '', disabled: true }], // Field only for display in edit mode
-      nombreProyecto: [null, Validators.required],
-      descripcionProyecto: [null, Validators.required],
-      estadoProyecto: [null, Validators.required],
-      usuarioProyecto: [null, Validators.required],
+  ) {}
+
+  ngOnInit() {
+    this.route.params.subscribe((params: Params) => {
+      this.idProyecto = params['id'];
+      this.isEditMode = !!this.idProyecto;
+      this.initForm();
+      this.loadUsuarios();
+
+      if (this.isEditMode) {
+        this.loadProjectData();
+      }
     });
   }
 
-  ngOnInit() {
-    this.loadUsers();
-    this.checkEditMode();
+  private initForm() {
+    this.projectForm = this.formBuilder.group({
+      idProyecto: [{ value: '', disabled: this.isEditMode }],
+      nombreProyecto: ['', [Validators.required, Validators.minLength(3)]],
+      descripcionProyecto: ['', Validators.required],
+      fechaCreacionProyecto: ['', Validators.required],
+      estadoProyecto: ['', Validators.required],
+      idUsuario: ['', Validators.required],
+    });
   }
 
-  loadUsers() {
-    this.userService.list().subscribe(
-      (data: User[]) => {
-        this.users = data;
+  private loadUsuarios(): void {
+    this.usuarioService.list().subscribe(
+      (usuarios) => {
+        this.usuariosDisponibles = usuarios;
       },
       (error) => {
-        console.error('Error al cargar usuarios', error);
+        console.error('Error al cargar usuarios:', error);
       }
     );
   }
 
-  checkEditMode() {
-    this.route.paramMap.subscribe(params => {
-      const projectId = params.get('id');
-      if (projectId) {
-        this.isEditMode = true;
-        this.projectId = +projectId;
-        this.loadProjectData(this.projectId); // Load project data when editing
-      }
-    });
-  }
-
-  loadProjectData(id: number) {
-    this.proyectoService.getById(id).subscribe((project: Proyecto) => {
-      this.form.patchValue({
-        idProyecto: project.idProyecto, // Display-only field
-        nombreProyecto: project.nombreProyecto,
-        descripcionProyecto: project.descripcionProyecto,
-        estadoProyecto: project.estadoProyecto,
-        usuarioProyecto: project.usuarioProyecto ? project.usuarioProyecto.idUsuario : null
+  private loadProjectData(): void {
+    this.proyectoService.getProyectoById(this.idProyecto).subscribe((data) => {
+      this.projectForm.patchValue({
+        idProyecto: data.idProyecto,
+        nombreProyecto: data.nombreProyecto,
+        descripcionProyecto: data.descripcionProyecto,
+        fechaCreacionProyecto: data.fechaCreacionProyecto,
+        estadoProyecto: data.estadoProyecto,
+        idUsuario: data.idUsuario,
       });
     });
   }
 
-  onSubmit() {
-    if (this.form.valid) {
-      const projectData = new Proyecto(
-        this.projectId ?? 0,
-        this.form.getRawValue().nombreProyecto,
-        this.form.getRawValue().descripcionProyecto,
-        new Date().toISOString().split('T')[0],
-        this.form.getRawValue().estadoProyecto,
-        this.users.find(user => user.idUsuario === this.form.value.usuarioProyecto) || null,
-        [], // Empty terrenos list by default
-        []  // Empty comentarios list by default
-      );
+  saveProject(): void {
+    if (this.projectForm.valid) {
+      const projectToSave = this.projectForm.getRawValue();
 
       if (this.isEditMode) {
-        // Update project
-        this.proyectoService.update(projectData).subscribe(() => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Proyecto Actualizado',
-            text: `Proyecto ${this.form.value.nombreProyecto} actualizado exitosamente.`,
-          }).then(() => {
-            this.router.navigate(['/proyectos']);
-          });
-        }, (error) => {
-          console.error('Error al actualizar el proyecto', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo actualizar el proyecto. Inténtalo de nuevo.',
-          });
-        });
+        this.proyectoService.update(projectToSave).subscribe(
+          () => {
+            this.snackBar.open('Proyecto actualizado exitosamente', 'Cerrar', {
+              duration: 3000,
+            });
+            this.navigateToProjects();
+          },
+          (error) => {
+            console.error('Error al actualizar el proyecto:', error);
+            this.snackBar.open('Error al actualizar el proyecto.', 'Cerrar', {
+              duration: 3000,
+            });
+          }
+        );
       } else {
-        // Create new project
-        this.proyectoService.create(projectData).subscribe(() => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Proyecto Creado',
-            text: `Proyecto ${this.form.value.nombreProyecto} creado exitosamente.`,
-          }).then(() => {
-            this.router.navigate(['/proyectos']);
-          });
-        }, (error) => {
-          console.error('Error al crear el proyecto', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo crear el proyecto. Inténtalo de nuevo.',
-          });
-        });
+        this.proyectoService.create(projectToSave).subscribe(
+          () => {
+            this.snackBar.open('Proyecto registrado exitosamente', 'Cerrar', {
+              duration: 3000,
+            });
+            this.navigateToProjects();
+          },
+          (error) => {
+            console.error('Error al registrar el proyecto:', error);
+            this.snackBar.open('Error al registrar el proyecto.', 'Cerrar', {
+              duration: 3000,
+            });
+          }
+        );
       }
     } else {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Advertencia',
-        text: 'Por favor, completa todos los campos requeridos.',
-      });
+      this.projectForm.markAllAsTouched();
     }
+  }
+
+  navigateToProjects(): void {
+    this.router.navigate(['/proyectos']);
   }
 }

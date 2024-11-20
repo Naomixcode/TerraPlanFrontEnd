@@ -1,0 +1,45 @@
+<div class="container">
+    <h1>{{ isEditMode ? 'Editar Prototipo Material' : 'Registrar Prototipo Material' }}</h1>
+    <form [formGroup]="prototipoMaterialForm" (ngSubmit)="savePrototipoMaterial()">
+      <!-- Campo ID Prototipo Material -->
+      <mat-form-field class="filter-field" *ngIf="isEditMode" appearance="outline">
+        <mat-label>ID de Prototipo Material</mat-label>
+        <input matInput formControlName="idPrototipoMaterial" />
+      </mat-form-field>
+  
+      <!-- Campo Prototipo -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Prototipo</mat-label>
+        <mat-select formControlName="idPrototipo" required>
+          <mat-option *ngFor="let prototipo of prototiposDisponibles" [value]="prototipo.idPrototipo">
+            {{ prototipo.descripcionPrototipo }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="prototipoMaterialForm.get('idPrototipo')?.invalid">
+          Seleccione un prototipo.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Campo Material -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Material</mat-label>
+        <mat-select formControlName="idMaterial" required>
+          <mat-option *ngFor="let material of materialesDisponibles" [value]="material.idMaterial">
+            {{ material.tipoMaterial }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="prototipoMaterialForm.get('idMaterial')?.invalid">
+          Seleccione un material.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Botones -->
+      <div class="button-container">
+        <button mat-flat-button color="primary" type="submit">
+          {{ isEditMode ? 'Guardar Cambios' : 'Registrar' }}
+        </button>
+        <button mat-button type="button" (click)="navigateToPrototipoMateriales()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+  

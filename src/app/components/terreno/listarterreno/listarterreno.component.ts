@@ -8,12 +8,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
-import { Proyecto } from '../../../models/Proyecto';
-import { ProyectoService } from '../../../services/proyecto.service';
+import { Terreno } from '../../../models/Terreno';
+import { TerrenoService } from '../../../services/terreno.service';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-listarproyecto',
+  selector: 'app-listarterreno',
   standalone: true,
   imports: [
     CommonModule,
@@ -25,60 +25,60 @@ import { RouterModule } from '@angular/router';
     MatCardModule,
     RouterModule,
   ],
-  templateUrl: './listarproyecto.component.html',
-  styleUrls: ['./listarproyecto.component.css'],
+  templateUrl: './listarterreno.component.html',
+  styleUrls: ['./listarterreno.component.css'],
 })
-export class ListarProyectoComponent implements OnInit {
-  proyectoDataSource: MatTableDataSource<Proyecto> = new MatTableDataSource();
-  paginatedProyectos: Proyecto[] = []; // Proyectos visibles en la página actual
+export class ListarTerrenoComponent implements OnInit {
+  terrenoDataSource: MatTableDataSource<Terreno> = new MatTableDataSource();
+  paginatedTerrenos: Terreno[] = []; // Terrenos visibles en la página actual
   pageSize = 5; // Tamaño de página inicial
   currentPage = 0; // Página actual
 
-  @ViewChild(MatPaginator) proyectoPaginator!: MatPaginator;
+  @ViewChild(MatPaginator) terrenoPaginator!: MatPaginator;
 
-  constructor(private proyectoService: ProyectoService) {}
+  constructor(private terrenoService: TerrenoService) {}
 
   ngOnInit(): void {
-    this.loadProyectos();
+    this.loadTerrenos();
   }
 
-  // Carga la lista de Proyectos
-  loadProyectos(): void {
-    this.proyectoService.list().subscribe((data) => {
-      this.proyectoDataSource.data = data;
-      this.updatePaginatedProyectos();
+  // Carga la lista de Terrenos
+  loadTerrenos(): void {
+    this.terrenoService.list().subscribe((data) => {
+      this.terrenoDataSource.data = data;
+      this.updatePaginatedTerrenos();
     });
   }
 
-  // Actualiza la lista de Proyectos según la página actual
-  updatePaginatedProyectos(): void {
+  // Actualiza la lista de Terrenos según la página actual
+  updatePaginatedTerrenos(): void {
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.paginatedProyectos = this.proyectoDataSource.filteredData.slice(
+    this.paginatedTerrenos = this.terrenoDataSource.filteredData.slice(
       startIndex,
       endIndex
     );
   }
 
-  // Filtro para Proyectos
+  // Filtro para Terrenos
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.proyectoDataSource.filter = filterValue.trim().toLowerCase();
+    this.terrenoDataSource.filter = filterValue.trim().toLowerCase();
     this.currentPage = 0; // Reiniciar a la primera página después de filtrar
-    this.updatePaginatedProyectos();
+    this.updatePaginatedTerrenos();
   }
 
   // Maneja el cambio de página
   onPageChange(event: any): void {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.updatePaginatedProyectos();
+    this.updatePaginatedTerrenos();
   }
 
-  // Elimina un Proyecto por ID
-  deleteProyecto(idProyecto: number): void {
-    this.proyectoService.delete(idProyecto).subscribe(() => {
-      this.loadProyectos(); // Refresca la lista después de eliminar
+  // Elimina un Terreno por ID
+  deleteTerreno(idTerreno: number): void {
+    this.terrenoService.delete(idTerreno).subscribe(() => {
+      this.loadTerrenos(); // Refresca la lista después de eliminar
     });
   }
 }

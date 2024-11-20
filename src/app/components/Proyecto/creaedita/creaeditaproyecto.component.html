@@ -1,44 +1,81 @@
-<div class="form-container">
-    <h2 class="form-title">{{ isEditMode ? 'Editar Proyecto' : 'Crear Proyecto' }}</h2>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        
-        <!-- ID Proyecto field - only visible in edit mode and read-only -->
-        <mat-form-field *ngIf="isEditMode" appearance="fill">
-            <mat-label>ID del Proyecto</mat-label>
-            <input matInput formControlName="idProyecto" readonly>
-        </mat-form-field>
-        
-        <!-- Nombre del Proyecto field -->
-        <mat-form-field appearance="fill">
-            <mat-label>Nombre del Proyecto</mat-label>
-            <input matInput formControlName="nombreProyecto" placeholder="Ingrese el nombre del proyecto">
-            <mat-error *ngIf="form.get('nombreProyecto')?.invalid && form.get('nombreProyecto')?.touched">
-                El nombre del proyecto es requerido.
-            </mat-error>
-        </mat-form-field>
-
-        <!-- Descripción del Proyecto field -->
-        <mat-form-field appearance="fill">
-            <mat-label>Descripción del Proyecto</mat-label>
-            <input matInput formControlName="descripcionProyecto" placeholder="Ingrese la descripción del proyecto">
-        </mat-form-field>
-
-        <!-- Estado del Proyecto field -->
-        <mat-form-field appearance="fill">
-            <mat-label>Estado del Proyecto</mat-label>
-            <input matInput formControlName="estadoProyecto" placeholder="Ingrese el estado del proyecto">
-        </mat-form-field>
-
-        <!-- Usuario Asociado dropdown -->
-        <mat-form-field appearance="fill">
-            <mat-label>Usuario Asociado</mat-label>
-            <mat-select formControlName="usuarioProyecto">
-                <mat-option *ngFor="let user of users" [value]="user.idUsuario">
-                    {{ user.nombreCompleto }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <button mat-raised-button type="submit">{{ isEditMode ? 'Actualizar Proyecto' : 'Crear Proyecto' }}</button>
+<div class="container">
+    <h1>{{ isEditMode ? 'Editar Proyecto' : 'Registrar Proyecto' }}</h1>
+    <form [formGroup]="projectForm" (ngSubmit)="saveProject()">
+      <!-- Campo ID Proyecto (solo visible en edición) -->
+      <mat-form-field class="filter-field" *ngIf="isEditMode" appearance="outline">
+        <mat-label>ID de Proyecto</mat-label>
+        <input matInput formControlName="idProyecto"/>
+      </mat-form-field>
+  
+      <!-- Campo Nombre Proyecto -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombreProyecto" required />
+        <div
+          *ngIf="projectForm.get('nombreProyecto')?.invalid && projectForm.get('nombreProyecto')?.touched"
+          class="no-data-message"
+        >
+          {{ projectForm.get('nombreProyecto')?.hasError('required') ? 'El nombre es obligatorio.' : '' }}
+          {{ projectForm.get('nombreProyecto')?.hasError('minlength') ? 'Debe tener al menos 3 caracteres.' : '' }}
+        </div>
+      </mat-form-field>
+  
+      <!-- Campo Descripción Proyecto -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcionProyecto" rows="3" required></textarea>
+        <div
+          *ngIf="projectForm.get('descripcionProyecto')?.invalid && projectForm.get('descripcionProyecto')?.touched"
+          class="no-data-message"
+        >
+          {{ projectForm.get('descripcionProyecto')?.hasError('required') ? 'La descripción es obligatoria.' : '' }}
+        </div>
+      </mat-form-field>
+  
+      <!-- Campo Fecha Proyecto -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Fecha de Creación</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fechaCreacionProyecto" required />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker touchUi="true" [startAt]="startDate"></mat-datepicker>
+        <mat-error *ngIf="projectForm.get('fechaCreacionProyecto')?.invalid">
+          Seleccione una fecha válida.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Campo Estado Proyecto -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estadoProyecto" required>
+          <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado">
+            {{ estado }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="projectForm.get('estadoProyecto')?.invalid">
+          Seleccione un estado.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Campo Usuario -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <mat-select formControlName="idUsuario" required>
+          <mat-option *ngFor="let usuario of usuariosDisponibles" [value]="usuario.idUsuario">
+            {{ usuario.nombreCompleto }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="projectForm.get('idUsuario')?.invalid">
+          Seleccione un usuario.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Botones -->
+      <div class="button-container">
+        <button mat-flat-button color="primary" type="submit">
+          {{ isEditMode ? 'Guardar Cambios' : 'Registrar' }}
+        </button>
+        <button mat-button type="button" (click)="navigateToProjects()">Cancelar</button>
+      </div>
     </form>
-</div>
+  </div>
+  

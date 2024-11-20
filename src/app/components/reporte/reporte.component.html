@@ -1,5 +1,12 @@
 <router-outlet></router-outlet>
 <div [hidden]="route.children.length !== 0">
-  <app-reporteproyectoporestado></app-reporteproyectoporestado>
+  <!-- Botones para navegar entre reportes -->
+  <div style="text-align: center; margin-bottom: 20px;">
+    <button mat-raised-button color="primary" routerLink="/reportes/comentarios-por-usuario">
+      Comentarios por Usuario
+    </button>
+    <button mat-raised-button color="accent" routerLink="/reportes/proyectos-por-usuario">
+      Proyectos por Usuario
+    </button>
+  </div>
 </div>
-

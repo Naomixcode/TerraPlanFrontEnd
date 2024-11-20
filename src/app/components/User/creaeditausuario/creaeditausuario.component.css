@@ -153,13 +153,3 @@ mat-checkbox .mat-checkbox-label {
   .roles-container {
     margin-bottom: 50px;
   }
-
-  /* Centrar los campos de entrada */
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 800px; /* Ancho máximo */
-  }
-  

@@ -1,0 +1,72 @@
+<div class="container">
+    <h1>{{ isEditMode ? 'Editar Usuario' : 'Registrar Usuario' }}</h1>
+    <form [formGroup]="userForm" (submit)="saveUser()">
+      <!-- Campo User ID (solo visible en edición) -->
+      <mat-form-field class="filter-field" *ngIf="isEditMode" appearance="outline">
+        <mat-label>ID de Usuario</mat-label>
+        <input matInput formControlName="idUsuario" />
+      </mat-form-field>
+  
+      <!-- Campo Nombre Completo -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Nombre Completo</mat-label>
+        <input matInput formControlName="nombreCompleto" required />
+        <div
+          *ngIf="userForm.get('nombreCompleto')?.invalid && userForm.get('nombreCompleto')?.touched"
+          class="no-data-message"
+        >
+          {{ userForm.get('nombreCompleto')?.hasError('required') ? 'El nombre completo es obligatorio.' : '' }}
+          {{ userForm.get('nombreCompleto')?.hasError('minlength') ? 'Debe tener al menos 3 caracteres.' : '' }}
+        </div>
+      </mat-form-field>
+  
+      <!-- Campo Contraseña (solo en creación) -->
+      <mat-form-field class="filter-field" *ngIf="!isEditMode" appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="contrasenia" required />
+        <div
+          *ngIf="userForm.get('contrasenia')?.invalid && userForm.get('contrasenia')?.touched"
+          class="no-data-message"
+        >
+          {{ userForm.get('contrasenia')?.hasError('required') ? 'La contraseña es obligatoria.' : '' }}
+          {{ userForm.get('contrasenia')?.hasError('minlength') ? 'Debe tener al menos 6 caracteres.' : '' }}
+        </div>
+      </mat-form-field>
+  
+      <!-- Campo Estado -->
+      <div class="checkbox-container">
+        <mat-checkbox formControlName="enabled">Usuario activo</mat-checkbox>
+      </div>
+  
+      <!-- Roles -->
+      <div class="roles-container">
+        <h2>Asignar Roles</h2>
+        <mat-form-field class="filter-field" appearance="outline">
+          <mat-label>Seleccionar Rol</mat-label>
+          <mat-select #roleSelect>
+            <mat-option *ngFor="let role of rolesDisponibles" (click)="addRole(role)">
+              {{ role }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <div *ngIf="roles.length > 0" class="selected-roles">
+            <h2>Roles Seleccionados:</h2>
+            <div *ngFor="let role of roles.controls; let i = index" class="role-chip">
+              {{ role.value }}
+              <button mat-icon-button color="warn" type="button" (click)="removeRole(i)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>          
+      </div>
+  
+    <!-- Botones -->
+    <div class="button-container">
+        <button mat-flat-button color="primary" type="submit">
+        {{ isEditMode ? 'Guardar Cambios' : 'Registrar' }}
+        </button>
+    </div>  
+    </form>
+  </div>
+  

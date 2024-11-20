@@ -1,34 +1,34 @@
 <div class="list-wrapper">
     <div class="list-header">
-      <h1>Lista de Prototipo-Material</h1>
-      <p>Cantidad de registros: {{ prototipoMaterialDataSource.data.length }}</p>
+      <h1>Lista de Usuarios</h1>
+      <p>Cantidad de registros: {{ userDataSource.data.length }}</p>
       <mat-form-field class="filter-field" appearance="outline">
-        <mat-label>Filtrar por Prototipo</mat-label>
+        <mat-label>Filtrar por Nombre</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar" />
       </mat-form-field>
     </div>
   
     <div class="card-container">
       <mat-card
-        *ngFor="let prototipoMaterial of paginatedPrototipoMateriales"
+        *ngFor="let user of paginatedUsers"
         class="styled-card"
         appearance="outlined"
       >
         <mat-card-header>
-          <mat-card-title>Prototipo-Material ID: {{ prototipoMaterial.idPrototipoMaterial }}</mat-card-title>
+          <mat-card-title>Usuario ID: {{ user.idUsuario }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p><strong>Prototipo:</strong> {{ prototipoMaterial.descripcionPrototipo }}</p>
-          <p><strong>Material:</strong> {{ prototipoMaterial.descripcionMaterial }}</p>
+          <p><strong>Nombre Completo:</strong> {{ user.nombreCompleto }}</p>
+          <p><strong>Activo:</strong> {{ user.enabled ? 'Sí' : 'No' }}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-icon-button color="warn" (click)="deletePrototipoMaterial(prototipoMaterial.idPrototipoMaterial)">
+          <button mat-icon-button color="warn" (click)="deleteUser(user.idUsuario)">
             <mat-icon>delete</mat-icon>
           </button>
           <button
             mat-raised-button
             color="primary"
-            [routerLink]="['/prototipos-material/editar', prototipoMaterial.idPrototipoMaterial]"
+            [routerLink]="['/usuarios/editar', user.idUsuario]"
           >
             <mat-icon>edit</mat-icon> Editar
           </button>
@@ -37,7 +37,7 @@
     </div>
   
     <!-- Mensaje de "No hay coincidencias" -->
-    <div *ngIf="prototipoMaterialDataSource.filteredData.length === 0" class="no-data-message">
+    <div *ngIf="userDataSource.filteredData.length === 0" class="no-data-message">
       No hay coincidencias.
     </div>
   
@@ -45,7 +45,7 @@
     <mat-paginator
       [pageSizeOptions]="[5, 10, 20]"
       showFirstLastButtons
-      [length]="prototipoMaterialDataSource.filteredData.length"
+      [length]="userDataSource.filteredData.length"
       [pageSize]="pageSize"
       (page)="onPageChange($event)"
     ></mat-paginator>

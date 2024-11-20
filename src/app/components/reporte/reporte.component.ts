@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { ReporteproyectoporestadoComponent } from './reporteproyectoporestado/reporteproyectoporestado.component';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-reporte',
+  selector: 'app-reportes',
   standalone: true,
-  imports: [RouterOutlet, ReporteproyectoporestadoComponent],
-  templateUrl: './reporte.component.html',
-  styleUrl: './reporte.component.css'
+  imports: [RouterOutlet, CommonModule, MatButtonModule],
+  templateUrl: './reportes.component.html',
+  styleUrls: ['./reportes.component.css'],
 })
-export class ReporteComponent {
+export class ReportesComponent {
   constructor(public route: ActivatedRoute) {}
 }
