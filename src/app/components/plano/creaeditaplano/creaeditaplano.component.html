@@ -1,0 +1,61 @@
+<div class="container">
+    <h1>{{ isEditMode ? 'Editar Plano' : 'Registrar Plano' }}</h1>
+    <form [formGroup]="planoForm" (ngSubmit)="savePlano()">
+      <!-- Campo ID Plano (solo visible en edición) -->
+      <mat-form-field class="filter-field" *ngIf="isEditMode" appearance="outline">
+        <mat-label>ID de Plano</mat-label>
+        <input matInput formControlName="idPlano" />
+      </mat-form-field>
+  
+      <!-- Campo Tipo de Plano -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Tipo de Plano</mat-label>
+        <input matInput formControlName="tipoPlano" required />
+        <mat-error *ngIf="planoForm.get('tipoPlano')?.invalid">
+          El tipo de plano es obligatorio.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Campo Descripción del Plano -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcionPlano" rows="3" required></textarea>
+        <mat-error *ngIf="planoForm.get('descripcionPlano')?.invalid">
+          La descripción es obligatoria.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Campo Fecha del Plano -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Fecha del Plano</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fechaPlano" required />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker touchUi="true" [startAt]="startDate"></mat-datepicker>
+        <mat-error *ngIf="planoForm.get('fechaPlano')?.invalid">
+          Seleccione una fecha válida.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Campo Terreno -->
+      <mat-form-field class="filter-field" appearance="outline">
+        <mat-label>Terreno</mat-label>
+        <mat-select formControlName="idTerreno" required>
+          <mat-option *ngFor="let terreno of terrenosDisponibles" [value]="terreno.idTerreno">
+            {{ terreno.descripcionTerreno }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="planoForm.get('idTerreno')?.invalid">
+          Seleccione un terreno.
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Botones -->
+      <div class="button-container">
+        <button mat-flat-button color="primary" type="submit">
+          {{ isEditMode ? 'Guardar Cambios' : 'Registrar' }}
+        </button>
+        <button mat-button type="button" (click)="navigateToPlanos()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+  
